@@ -1,0 +1,179 @@
+# Copyright (C) 2024 Kaj-Sören Mossdorf
+# This file is distributed under the same license as the Polarsteps Importer plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Polarsteps Importer 1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-21 10:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: Gemini Code Assist\n"
+"X-Domain: polarsteps-importer\n"
+
+#. Plugin Name of the plugin
+msgid "Polarsteps Importer"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Import your Polarsteps trips as WordPress posts, including images, location "
+"data, and original publication dates."
+msgstr ""
+
+#: includes/class-importer-plugin.php:38
+msgid "Every hour"
+msgid_plural "Every %d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-importer-plugin.php:65
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+#: includes/class-importer-plugin.php:65
+msgid "Manual import triggered."
+msgstr ""
+
+#: includes/class-importer-settings.php:11
+#: includes/class-importer-settings.php:12
+#: includes/class-importer-settings.php:161
+msgid "Polarsteps Importer"
+msgstr ""
+
+#: includes/class-importer-settings.php:26
+msgid "Polarsteps Settings"
+msgstr ""
+
+#: includes/class-importer-settings.php:32
+msgid "Trip ID"
+msgstr ""
+
+#: includes/class-importer-settings.php:39
+msgid "Remember Token"
+msgstr ""
+
+#: includes/class-importer-settings.php:46
+msgid "Ignore steps without title"
+msgstr ""
+
+#: includes/class-importer-settings.php:53
+msgid "Ignore Step IDs"
+msgstr ""
+
+#: includes/class-importer-settings.php:60
+msgid "Post Type"
+msgstr ""
+
+#: includes/class-importer-settings.php:67
+msgid "Category"
+msgstr ""
+
+#: includes/class-importer-settings.php:74
+msgid "Post Status"
+msgstr ""
+
+#: includes/class-importer-settings.php:81
+msgid "Update Interval (in hours)"
+msgstr ""
+
+#: includes/class-importer-settings.php:88
+msgid "Enable Debug Mode"
+msgstr ""
+
+#: includes/class-importer-settings.php:154
+msgid "Logs have been cleared."
+msgstr ""
+
+#: includes/class-importer-settings.php:162
+msgid ""
+"The import has been started in the background. The logs will be updated "
+"shortly."
+msgstr ""
+#: includes/class-importer-settings.php:167
+msgid "Save Settings"
+msgstr ""
+
+#: includes/class-importer-settings.php:172
+msgid "Manual Import"
+msgstr ""
+
+#: includes/class-importer-settings.php:201
+msgid "Debug Logs"
+msgstr ""
+
+#: includes/class-importer-settings.php:175
+msgid "Import Now"
+msgstr ""
+
+#: includes/class-importer-settings.php:186
+msgid "No logs found. Run an import to generate logs."
+msgstr ""
+
+#: includes/class-importer-settings.php:197
+msgid "Clear Logs"
+msgstr ""
+
+#: includes/class-importer-settings.php:211
+msgid ""
+"Enter your Remember Token. It will be stored encrypted and will not be "
+"displayed again."
+msgstr ""
+
+#: includes/class-importer-settings.php:217
+msgid "Enable to skip steps without a title."
+msgstr ""
+
+#: includes/class-importer-settings.php:223
+msgid "e.g. 12345,67890,11111"
+msgstr ""
+
+#: includes/class-importer-settings.php:224
+msgid "Step IDs to ignore (comma-separated)."
+msgstr ""
+
+#: includes/class-importer-settings.php:233
+msgid "Draft"
+msgstr ""
+
+#: includes/class-importer-settings.php:234
+msgid "Published"
+msgstr ""
+
+#: includes/class-importer-settings.php:250
+msgid "Select the post type into which the Polarsteps steps should be imported."
+msgstr ""
+
+#: includes/class-importer-settings.php:251
+msgid "By default, \"post\" is used."
+msgstr ""
+
+#: includes/class-importer-settings.php:271
+msgid "The selected post type has no categories."
+msgstr ""
+
+#: includes/class-importer-settings.php:285
+#: includes/class-importer-settings.php:306
+msgid "No Category"
+msgstr ""
+
+#: includes/class-importer-settings.php:292
+msgid "Select a category for the imported posts."
+msgstr ""
+
+#: includes/class-importer-settings.php:330
+msgid "The selected post type has no categories"
+msgstr ""
+
+#: includes/class-importer-settings.php:337
+msgid ""
+"Enables debug mode. No posts will be created, but the API response will be "
+"logged."
+msgstr ""
+
+#: includes/class-importer-settings.php:341
+msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
+msgstr ""

@@ -1,9 +1,12 @@
 <?php
 /*
 Plugin Name: Polarsteps Importer
-Description: Importiert Steps von Polarsteps als WordPress-Beiträge inkl. Bildern, Ortsdaten und originalen Veröffentlichungsdaten.
-Version: 1.7
-Author: Dein Name
+Description: Import your Polarsteps trips as WordPress posts, including images, location data, and original publication dates.
+Version: 1.1
+Author: Kaj-Sören Mossdorf
+Author URI: https://macroco.de
+Text Domain: polarsteps-importer
+Domain Path: /languages
 */
 
 if (!defined('ABSPATH')) {

@@ -9,9 +9,9 @@ class Polarsteps_Importer_Settings {
 
     public function add_admin_menu() {
         add_menu_page(
-            'Polarsteps Importer',
-            'Polarsteps Importer',
-            'manage_options',
+            __('Polarsteps Importer', 'polarsteps-importer'),
+            __('Polarsteps Importer', 'polarsteps-importer'),
+            'manage_options', // Capability
             'polarsteps-importer',
             [$this, 'options_page_with_logs'],
             'dashicons-location-alt',
@@ -24,14 +24,14 @@ class Polarsteps_Importer_Settings {
 
         add_settings_section(
             'polarsteps_importer_section',
-            'Polarsteps-Einstellungen',
+            __('Polarsteps Settings', 'polarsteps-importer'),
             [$this, 'settings_section_callback'],
             'polarsteps-importer'
         );
 
         add_settings_field(
             'polarsteps_trip_id',
-            'Trip-ID',
+            __('Trip ID', 'polarsteps-importer'),
             [$this, 'trip_id_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
@@ -39,15 +39,31 @@ class Polarsteps_Importer_Settings {
 
         add_settings_field(
             'polarsteps_remember_token',
-            'Remember Token',
+            __('Remember Token', 'polarsteps-importer'),
             [$this, 'remember_token_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
         );
 
         add_settings_field(
+            'polarsteps_ignore_no_title',
+            __('Ignore steps without title', 'polarsteps-importer'),
+            [$this, 'ignore_no_title_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
+            'polarsteps_ignored_step_ids',
+            __('Ignore Step IDs', 'polarsteps-importer'),
+            [$this, 'ignored_step_ids_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
             'polarsteps_post_type',
-            'Post-Type',
+            __('Post Type', 'polarsteps-importer'),
             [$this, 'post_type_render'], // Neues Feld für Post-Type-Auswahl
             'polarsteps-importer',
             'polarsteps_importer_section'
@@ -55,7 +71,7 @@ class Polarsteps_Importer_Settings {
 
         add_settings_field(
             'polarsteps_post_category',
-            'Kategorie',
+            __('Category', 'polarsteps-importer'),
             [$this, 'post_category_render'], // Neues Feld für Kategorie-Auswahl
             'polarsteps-importer',
             'polarsteps_importer_section'
@@ -63,7 +79,7 @@ class Polarsteps_Importer_Settings {
 
         add_settings_field(
             'polarsteps_post_status',
-            'Beitragsstatus',
+            __('Post Status', 'polarsteps-importer'),
             [$this, 'post_status_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
@@ -71,7 +87,7 @@ class Polarsteps_Importer_Settings {
 
         add_settings_field(
             'polarsteps_update_interval',
-            'Aktualisierungsintervall (in Stunden)',
+            __('Update Interval (in hours)', 'polarsteps-importer'),
             [$this, 'update_interval_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
@@ -79,7 +95,7 @@ class Polarsteps_Importer_Settings {
 
         add_settings_field(
             'polarsteps_debug_mode',
-            'Debug-Modus aktivieren',
+            __('Enable Debug Mode', 'polarsteps-importer'),
             [$this, 'debug_mode_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
@@ -100,37 +116,42 @@ class Polarsteps_Importer_Settings {
     public function options_page_with_logs() {
         // Speichere Einstellungen, falls Formular gesendet wurde
         if (isset($_POST['clear_logs']) && check_admin_referer('polarsteps_importer_clear_logs')) {
-            update_option('polarsteps_importer_logs', []);
-            echo '<div class="notice notice-success"><p>Logs wurden gelöscht.</p></div>';
+            delete_option('polarsteps_importer_logs');
+            echo '<div class="notice notice-success"><p>' . esc_html__('Logs have been cleared.', 'polarsteps-importer') . '</p></div>';
+        }
+
+        // Benachrichtigung für manuellen Import-Start
+        if (isset($_GET['manual_run_triggered']) && $_GET['manual_run_triggered'] === '1') {
+            echo '<div class="notice notice-info is-dismissible"><p>' . esc_html__('The import has been started in the background. The logs will be updated shortly.', 'polarsteps-importer') . '</p></div>';
         }
 
         ?>
         <div class="wrap">
-            <h1>Polarsteps Importer</h1>
+            <h1><?php esc_html_e('Polarsteps Importer', 'polarsteps-importer'); ?></h1>
 
             <!-- Einstellungen -->
             <form action="options.php" method="post">
                 <?php
                 settings_fields('polarsteps_importer');
                 do_settings_sections('polarsteps-importer');
-                submit_button('Einstellungen speichern');
+                submit_button(__('Save Settings', 'polarsteps-importer'));
                 ?>
             </form>
 
             <hr>
 
             <!-- Manueller Import -->
-            <h3>Manueller Import</h3>
+            <h3><?php esc_html_e('Manual Import', 'polarsteps-importer'); ?></h3>
             <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                 <input type="hidden" name="action" value="polarsteps_importer_run_now">
                 <?php wp_nonce_field('polarsteps_importer_run_now'); ?>
-                <?php submit_button('Jetzt importieren', 'secondary', 'submit', false); ?>
+                <?php submit_button(__('Import Now', 'polarsteps-importer'), 'secondary', 'submit', false); ?>
             </form>
 
             <hr>
 
             <!-- Logs-Anzeige -->
-            <h3>Debug-Logs</h3>
+            <h3><?php esc_html_e('Debug Logs', 'polarsteps-importer'); ?></h3>
             <?php $this->display_filtered_logs(); ?>
         </div>
         <?php
@@ -141,7 +162,7 @@ class Polarsteps_Importer_Settings {
         $logs = get_option('polarsteps_importer_logs', []);
 
         if (empty($logs)) {
-            echo '<p>Keine Logs gefunden. Führe einen Import durch, um Logs zu generieren.</p>';
+            echo '<p>' . esc_html__('No logs found. Run an import to generate logs.', 'polarsteps-importer') . '</p>';
             return;
         }
 
@@ -155,7 +176,7 @@ class Polarsteps_Importer_Settings {
         echo '<p style="margin-top: 10px;">';
         echo '<form method="post">';
         wp_nonce_field('polarsteps_importer_clear_logs');
-        submit_button('Logs löschen', 'delete', 'clear_logs', false);
+        submit_button(__('Clear Logs', 'polarsteps-importer'), 'delete', 'clear_logs', false);
         echo '</form>';
         echo '</p>';
     }
@@ -168,7 +189,22 @@ class Polarsteps_Importer_Settings {
 
     public function remember_token_render() {
         echo '<input type="password" name="polarsteps_importer_remember_token" value="">';
-        echo '<p class="description">Trage dein Remember Token ein. Es wird verschlüsselt gespeichert und taucht nicht wieder auf.</p>';
+        echo '<p class="description">' . esc_html__('Enter your Remember Token. It will be stored encrypted and will not be displayed again.', 'polarsteps-importer') . '</p>';
+    }
+
+    public function ignore_no_title_render() {
+        $options = get_option('polarsteps_importer_settings');
+        echo '<input type="checkbox" name="polarsteps_importer_settings[polarsteps_ignore_no_title]" ' .
+             checked($options['polarsteps_ignore_no_title'] ?? false, true, false) . ' value="1">';
+        echo '<p class="description">' . esc_html__('Enable to skip steps without a title.', 'polarsteps-importer') . '</p>';
+    }
+
+    public function ignored_step_ids_render() {
+        $options = get_option('polarsteps_importer_settings');
+        echo '<input type="text" name="polarsteps_importer_settings[polarsteps_ignored_step_ids]" ' .
+             'value="' . esc_attr($options['polarsteps_ignored_step_ids'] ?? '') . '" ' .
+             'placeholder="' . esc_attr__('e.g. 12345,67890,11111', 'polarsteps-importer') . '" style="width: 300px;">';
+        echo '<p class="description">' . esc_html__('Step IDs to ignore (comma-separated).', 'polarsteps-importer') . '</p>';
     }
 
     public function update_interval_render() {
@@ -180,8 +216,8 @@ class Polarsteps_Importer_Settings {
         $options = get_option('polarsteps_importer_settings');
         $status = $options['polarsteps_post_status'] ?? 'draft';
         echo '<select name="polarsteps_importer_settings[polarsteps_post_status]">';
-        echo '<option value="draft" ' . selected($status, 'draft', false) . '>Entwurf</option>';
-        echo '<option value="publish" ' . selected($status, 'publish', false) . '>Veröffentlicht</option>';
+        echo '<option value="draft" ' . selected($status, 'draft', false) . '>' . esc_html__('Draft', 'polarsteps-importer') . '</option>';
+        echo '<option value="publish" ' . selected($status, 'publish', false) . '>' . esc_html__('Published', 'polarsteps-importer') . '</option>';
         echo '</select>';
     }
 
@@ -200,8 +236,8 @@ class Polarsteps_Importer_Settings {
             <?php endforeach; ?>
         </select>
         <p class="description">
-            Wähle den Post-Type, in den die Polarsteps-Steps importiert werden sollen.<br>
-            Standardmäßig werden Beiträge ("post") verwendet.
+            <?php esc_html_e('Select the post type into which the Polarsteps steps should be imported.', 'polarsteps-importer'); ?><br>
+            <?php esc_html_e('By default, "post" is used.', 'polarsteps-importer'); ?>
         </p>
         <?php
     }
@@ -222,8 +258,8 @@ class Polarsteps_Importer_Settings {
         }
 
         if (empty($category_taxonomies)) {
-            echo '<p>Der ausgewählte Post-Type hat keine Kategorien.</p>';
-            echo '<input type="hidden" name="polarsteps_importer_settings[polarsteps_post_category]" value="0">';
+            echo '<p>' . esc_html__('The selected post type has no categories.', 'polarsteps-importer') . '</p>';
+            echo '<input type="hidden" name="polarsteps_importer_settings[polarsteps_post_category]" value="0" id="polarsteps_post_category">';
             return;
         }
 
@@ -236,7 +272,7 @@ class Polarsteps_Importer_Settings {
 
         ?>
         <select name="polarsteps_importer_settings[polarsteps_post_category]" id="polarsteps_post_category">
-            <option value="0">-- Keine Kategorie --</option>
+            <option value="0">-- <?php esc_html_e('No Category', 'polarsteps-importer'); ?> --</option>
             <?php foreach ($terms as $term): ?>
                 <option value="<?php echo esc_attr($term->term_id); ?>" <?php selected($category_id, $term->term_id); ?>>
                     <?php echo esc_html($term->name); ?>
@@ -244,7 +280,7 @@ class Polarsteps_Importer_Settings {
             <?php endforeach; ?>
         </select>
         <p class="description">
-            Wähle eine Kategorie für die importierten Beiträge.
+            <?php esc_html_e('Select a category for the imported posts.', 'polarsteps-importer'); ?>
         </p>
 
         <script>
@@ -257,7 +293,7 @@ class Polarsteps_Importer_Settings {
 
                 // Leere das Kategorie-Dropdown
                 categorySelect.empty();
-                categorySelect.append('<option value="0">-- Keine Kategorie --</option>');
+                categorySelect.append('<option value="0">-- <?php esc_html_e('No Category', 'polarsteps-importer'); ?> --</option>');
 
                 // Suche nach hierarchischen Taxonomien (Kategorien)
                 for (var taxName in taxonomies) {
@@ -285,7 +321,7 @@ class Polarsteps_Importer_Settings {
                 }
 
                 if (!hasCategories) {
-                    categorySelect.append('<option value="0">Der ausgewählte Post-Type hat keine Kategorien</option>');
+                    categorySelect.append('<option value="0"><?php esc_html_e('The selected post type has no categories', 'polarsteps-importer'); ?></option>');
                 }
             });
         });
@@ -296,11 +332,11 @@ class Polarsteps_Importer_Settings {
     public function debug_mode_render() {
         $options = get_option('polarsteps_importer_settings');
         echo '<input type="checkbox" name="polarsteps_importer_settings[polarsteps_debug_mode]" ' . checked($options['polarsteps_debug_mode'] ?? false, true, false) . ' value="1">';
-        echo '<p class="description">Aktiviert den Debug-Modus. Es werden keine Beiträge erstellt, aber die API-Antwort wird geloggt.</p>';
+        echo '<p class="description">' . esc_html__('Enables debug mode. No posts will be created, but the API response will be logged.', 'polarsteps-importer') . '</p>';
     }
 
     public function settings_section_callback() {
-        echo '<p>Trage deine Polarsteps Trip-ID und deinen Remember Token ein, um Steps als WordPress-Beiträge zu importieren.</p>';
+        echo '<p>' . esc_html__('Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts.', 'polarsteps-importer') . '</p>';
     }
 
     public function save_settings($settings) {
@@ -310,6 +346,10 @@ class Polarsteps_Importer_Settings {
             $options = get_option('polarsteps_importer_settings');
             $settings['polarsteps_remember_token'] = $options['polarsteps_remember_token'] ?? '';   
         }
+
+        $new_interval = $settings['polarsteps_update_interval'] ?? 1;
+        Polarsteps_Importer_Plugin::reschedule_cron_job($new_interval);
+
         return $settings;
     }
 }

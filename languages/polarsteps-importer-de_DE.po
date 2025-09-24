@@ -1,0 +1,176 @@
+# German translation for Polarsteps Importer
+# Copyright (C) 2024 Kaj-Sören Mossdorf
+# This file is distributed under the same license as the Polarsteps Importer plugin.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Polarsteps Importer 1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
+"Last-Translator: Kaj-Sören Mossdorf <kaj@mossdorf.de>\n"
+"Language-Team: German <de@li.org>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-21 10:00+0000\n"
+"PO-Revision-Date: 2024-05-21 10:30+0000\n"
+"X-Generator: Gemini Code Assist\n"
+"X-Domain: polarsteps-importer\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+msgid "Polarsteps Importer"
+msgstr "Polarsteps Importer"
+
+#. Description of the plugin
+msgid "Import your Polarsteps trips as WordPress posts, including images, location data, and original publication dates."
+msgstr "Importiere deine Polarsteps-Reisen als WordPress-Beiträge, inklusive Bildern, Ortsdaten und originalen Veröffentlichungsdaten."
+
+#: includes/class-importer-plugin.php:38
+msgid "Every hour"
+msgid_plural "Every %d hours"
+msgstr[0] "Jede Stunde"
+msgstr[1] "Alle %d Stunden"
+
+#: includes/class-importer-plugin.php:65
+msgid "You do not have permission to perform this action."
+msgstr "Du hast keine Berechtigung, diese Aktion auszuführen."
+
+#: includes/class-importer-plugin.php:65
+msgid "Manual import triggered."
+msgstr "Manueller Import wurde angestoßen."
+
+#: includes/class-importer-settings.php:11
+#: includes/class-importer-settings.php:12
+#: includes/class-importer-settings.php:180
+msgid "Polarsteps Importer"
+msgstr "Polarsteps Importer"
+
+#: includes/class-importer-settings.php:26
+msgid "Polarsteps Settings"
+msgstr "Polarsteps-Einstellungen"
+
+#: includes/class-importer-settings.php:32
+msgid "Trip ID"
+msgstr "Trip-ID"
+
+#: includes/class-importer-settings.php:39
+msgid "Remember Token"
+msgstr "Remember-Token"
+
+#: includes/class-importer-settings.php:46
+msgid "Ignore steps without title"
+msgstr "Steps ohne Titel ignorieren"
+
+#: includes/class-importer-settings.php:53
+msgid "Ignore Step IDs"
+msgstr "Step-IDs ignorieren"
+
+#: includes/class-importer-settings.php:60
+msgid "Post Type"
+msgstr "Beitragstyp"
+
+#: includes/class-importer-settings.php:67
+msgid "Category"
+msgstr "Kategorie"
+
+#: includes/class-importer-settings.php:74
+msgid "Post Status"
+msgstr "Beitragsstatus"
+
+#: includes/class-importer-settings.php:81
+msgid "Update Interval (in hours)"
+msgstr "Aktualisierungsintervall (in Stunden)"
+
+#: includes/class-importer-settings.php:88
+msgid "Enable Debug Mode"
+msgstr "Debug-Modus aktivieren"
+
+#: includes/class-importer-settings.php:173
+msgid "Logs have been cleared."
+msgstr "Logs wurden gelöscht."
+
+#: includes/class-importer-settings.php:178
+msgid "The import has been started in the background. The logs will be updated shortly."
+msgstr "Der Import wurde im Hintergrund gestartet. Die Logs werden in Kürze aktualisiert."
+
+#: includes/class-importer-settings.php:186
+msgid "Save Settings"
+msgstr "Einstellungen speichern"
+
+#: includes/class-importer-settings.php:191
+msgid "Manual Import"
+msgstr "Manueller Import"
+
+#: includes/class-importer-settings.php:194
+msgid "Import Now"
+msgstr "Jetzt importieren"
+
+#: includes/class-importer-settings.php:201
+msgid "Debug-Logs"
+msgstr "Debug-Logs"
+
+#: includes/class-importer-settings.php:208
+msgid "No logs found. Run an import to generate logs."
+msgstr "Keine Logs gefunden. Führe einen Import durch, um Logs zu generieren."
+
+#: includes/class-importer-settings.php:219
+msgid "Clear Logs"
+msgstr "Logs löschen"
+
+#: includes/class-importer-settings.php:233
+msgid "Enter your Remember Token. It will be stored encrypted and will not be displayed again."
+msgstr "Trage dein Remember Token ein. Es wird verschlüsselt gespeichert und nicht wieder angezeigt."
+
+#: includes/class-importer-settings.php:239
+msgid "Enable to skip steps without a title."
+msgstr "Aktivieren, um Steps ohne Titel zu überspringen."
+
+#: includes/class-importer-settings.php:245
+msgid "e.g. 12345,67890,11111"
+msgstr "z. B. 12345,67890,11111"
+
+#: includes/class-importer-settings.php:246
+msgid "Step IDs to ignore (comma-separated)."
+msgstr "Step-IDs, die ignoriert werden sollen (kommagetrennt)."
+
+#: includes/class-importer-settings.php:255
+msgid "Draft"
+msgstr "Entwurf"
+
+#: includes/class-importer-settings.php:256
+msgid "Published"
+msgstr "Veröffentlicht"
+
+#: includes/class-importer-settings.php:272
+msgid "Select the post type into which the Polarsteps steps should be imported."
+msgstr "Wähle den Beitragstyp aus, in den die Polarsteps-Steps importiert werden sollen."
+
+#: includes/class-importer-settings.php:273
+msgid "By default, \"post\" is used."
+msgstr "Standardmäßig wird „Beitrag“ (post) verwendet."
+
+#: includes/class-importer-settings.php:293
+msgid "The selected post type has no categories."
+msgstr "Der ausgewählte Beitragstyp hat keine Kategorien."
+
+#: includes/class-importer-settings.php:307
+#: includes/class-importer-settings.php:328
+msgid "No Category"
+msgstr "Keine Kategorie"
+
+#: includes/class-importer-settings.php:314
+msgid "Select a category for the imported posts."
+msgstr "Wähle eine Kategorie für die importierten Beiträge."
+
+#: includes/class-importer-settings.php:352
+msgid "The selected post type has no categories"
+msgstr "Der ausgewählte Beitragstyp hat keine Kategorien"
+
+#: includes/class-importer-settings.php:359
+msgid "Enables debug mode. No posts will be created, but the API response will be logged."
+msgstr "Aktiviert den Debug-Modus. Es werden keine Beiträge erstellt, aber die API-Antwort wird geloggt."
+
+#: includes/class-importer-settings.php:363
+msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
+msgstr "Trage deine Polarsteps Trip-ID und deinen Remember Token ein, um Steps als WordPress-Beiträge zu importieren."
