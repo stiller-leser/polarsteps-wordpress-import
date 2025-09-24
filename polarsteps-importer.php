@@ -28,10 +28,22 @@ spl_autoload_register(function ($class) {
 
 // Initialisierung
 add_action('plugins_loaded', function() {
-    new Polarsteps_Importer_Plugin();
+    new Polarsteps_Importer_Core();
     new Polarsteps_Importer_Settings();
 });
 
 // Aktivierung/Deaktivierung
-register_activation_hook(__FILE__, ['Polarsteps_Importer_Plugin', 'activate']);
-register_deactivation_hook(__FILE__, ['Polarsteps_Importer_Plugin', 'deactivate']);
+register_activation_hook(__FILE__, function() {
+    require_once __DIR__ . '/includes/class-importer-cron.php';
+    require_once __DIR__ . '/includes/class-importer-settings.php';
+    Polarsteps_Importer_Cron::schedule_recurring_event();
+});
+
+register_deactivation_hook(__FILE__, function() {
+    require_once __DIR__ . '/includes/class-importer-cron.php';
+    require_once __DIR__ . '/includes/class-importer-settings.php';
+    Polarsteps_Importer_Settings::log_message(__('Deactivating Polarsteps Importer...', 'polarsteps-importer'));
+    Polarsteps_Importer_Cron::unschedule_all();
+    delete_option('polarsteps_importer_logs');
+    delete_option('polarsteps_importer_settings');
+});

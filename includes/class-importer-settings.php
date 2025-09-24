@@ -46,6 +46,22 @@ class Polarsteps_Importer_Settings {
         );
 
         add_settings_field(
+            'polarsteps_steps_per_run',
+            __('Max Steps per Run', 'polarsteps-importer'),
+            [$this, 'steps_per_run_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
+            'polarsteps_image_import_mode',
+            __('Image Import Mode', 'polarsteps-importer'),
+            [$this, 'image_import_mode_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
             'polarsteps_ignore_no_title',
             __('Ignore steps without title', 'polarsteps-importer'),
             [$this, 'ignore_no_title_render'],
@@ -115,9 +131,10 @@ class Polarsteps_Importer_Settings {
     // Kombinierte Seite für Einstellungen und Logs
     public function options_page_with_logs() {
         // Speichere Einstellungen, falls Formular gesendet wurde
-        if (isset($_POST['clear_logs']) && check_admin_referer('polarsteps_importer_clear_logs')) {
+        // Verarbeite das Löschen der Logs, wenn der entsprechende Button geklickt wurde.
+        if (isset($_POST['clear_logs']) && check_admin_referer('polarsteps_importer_clear_logs_nonce', 'polarsteps_importer_clear_logs_nonce')) {
             delete_option('polarsteps_importer_logs');
-            echo '<div class="notice notice-success"><p>' . esc_html__('Logs have been cleared.', 'polarsteps-importer') . '</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Logs have been cleared.', 'polarsteps-importer') . '</p></div>';
         }
 
         // Benachrichtigung für manuellen Import-Start
@@ -125,18 +142,15 @@ class Polarsteps_Importer_Settings {
             echo '<div class="notice notice-info is-dismissible"><p>' . esc_html__('The import has been started in the background. The logs will be updated shortly.', 'polarsteps-importer') . '</p></div>';
         }
 
+        // Benachrichtigung für erfolgreichen Abschluss des Imports
+        if (get_transient('polarsteps_import_completed')) {
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('The manual import has been successfully completed.', 'polarsteps-importer') . '</p></div>';
+            delete_transient('polarsteps_import_completed'); // Transient löschen, damit es nicht erneut angezeigt wird.
+        }
+
         ?>
         <div class="wrap">
             <h1><?php esc_html_e('Polarsteps Importer', 'polarsteps-importer'); ?></h1>
-
-            <!-- Einstellungen -->
-            <form action="options.php" method="post">
-                <?php
-                settings_fields('polarsteps_importer');
-                do_settings_sections('polarsteps-importer');
-                submit_button(__('Save Settings', 'polarsteps-importer'));
-                ?>
-            </form>
 
             <hr>
 
@@ -152,6 +166,16 @@ class Polarsteps_Importer_Settings {
 
             <!-- Logs-Anzeige -->
             <h3><?php esc_html_e('Debug Logs', 'polarsteps-importer'); ?></h3>
+            
+            <!-- Formular für Einstellungen -->
+            <form method="post" action="options.php">
+                <?php
+                settings_fields('polarsteps_importer');
+                do_settings_sections('polarsteps-importer');
+                submit_button(__('Save Settings', 'polarsteps-importer'));
+                ?>
+            </form>
+
             <?php $this->display_filtered_logs(); ?>
         </div>
         <?php
@@ -173,11 +197,13 @@ class Polarsteps_Importer_Settings {
 
         echo '</div>';
         // Lösch-Button für Logs
-        echo '<p style="margin-top: 10px;">';
-        echo '<form method="post">';
-        wp_nonce_field('polarsteps_importer_clear_logs');
+        echo '<p class="submit" style="margin-top: 10px; padding: 0;">';
+        // Formular für Log-Aktionen
+        echo '<form method="post" style="display: inline-block; margin-right: 10px;">';
+        wp_nonce_field('polarsteps_importer_clear_logs_nonce', 'polarsteps_importer_clear_logs_nonce');
         submit_button(__('Clear Logs', 'polarsteps-importer'), 'delete', 'clear_logs', false);
         echo '</form>';
+        printf('<a href="%s" class="button">%s</a>', esc_url(admin_url('options-general.php?page=polarsteps-importer')), esc_html__('Refresh Logs', 'polarsteps-importer'));
         echo '</p>';
     }
 
@@ -188,8 +214,13 @@ class Polarsteps_Importer_Settings {
     }
 
     public function remember_token_render() {
-        echo '<input type="password" name="polarsteps_importer_remember_token" value="">';
-        echo '<p class="description">' . esc_html__('Enter your Remember Token. It will be stored encrypted and will not be displayed again.', 'polarsteps-importer') . '</p>';
+        $options = get_option('polarsteps_importer_settings');
+        $placeholder = !empty(Polarsteps_Importer_Security::decrypt($options['polarsteps_remember_token'])) ? '••••••••••••' : '';
+        echo '<input type="text" name="polarsteps_importer_remember_token" value="" placeholder="' . esc_attr($placeholder) . '">';
+        if (!empty($placeholder)) {
+            echo '<p class="description">' . esc_html__('A token is already saved. To change it, enter a new one.', 'polarsteps-importer') . '</p>';
+        }
+        echo '<p class="description">' . esc_html__('Your Remember Token will be stored encrypted and will not be displayed again.', 'polarsteps-importer') . '</p>';
     }
 
     public function ignore_no_title_render() {
@@ -210,6 +241,24 @@ class Polarsteps_Importer_Settings {
     public function update_interval_render() {
         $options = get_option('polarsteps_importer_settings');
         echo '<input type="number" name="polarsteps_importer_settings[polarsteps_update_interval]" min="1" value="' . esc_attr($options['polarsteps_update_interval'] ?? 1) . '">';
+    }
+
+    public function steps_per_run_render() {
+        $options = get_option('polarsteps_importer_settings');
+        echo '<input type="number" name="polarsteps_importer_settings[polarsteps_steps_per_run]" min="1" value="' . esc_attr($options['polarsteps_steps_per_run'] ?? 10) . '">';
+        echo '<p class="description">' . esc_html__('Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps.', 'polarsteps-importer') . '</p>';
+    }
+
+    public function image_import_mode_render() {
+        $options = get_option('polarsteps_importer_settings');
+        $mode = $options['polarsteps_image_import_mode'] ?? 'gallery';
+        ?>
+        <select name="polarsteps_importer_settings[polarsteps_image_import_mode]">
+            <option value="gallery" <?php selected($mode, 'gallery'); ?>><?php esc_html_e('Append as gallery shortcode', 'polarsteps-importer'); ?></option>
+            <option value="embed" <?php selected($mode, 'embed'); ?>><?php esc_html_e('Embed individually in content', 'polarsteps-importer'); ?></option>
+        </select>
+        <p class="description"><?php esc_html_e('Choose how images are added to the post.', 'polarsteps-importer'); ?></p>
+        <?php
     }
 
     public function post_status_render() {
@@ -348,7 +397,7 @@ class Polarsteps_Importer_Settings {
         }
 
         $new_interval = $settings['polarsteps_update_interval'] ?? 1;
-        Polarsteps_Importer_Plugin::reschedule_cron_job($new_interval);
+        Polarsteps_Importer_Cron::reschedule_recurring_event();
 
         return $settings;
     }

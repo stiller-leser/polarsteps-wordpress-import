@@ -11,6 +11,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-05-21 10:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: Polarsteps Importer 1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-21 10:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: Gemini Code Assist\n"
 "X-Domain: polarsteps-importer\n"
 
@@ -24,11 +33,43 @@ msgid ""
 "data, and original publication dates."
 msgstr ""
 
+#: includes/class-importer-plugin.php:8
+msgid "Recurring cron job scheduled on plugin activation."
+msgstr ""
+
+#: includes/class-importer-plugin.php:15
+msgid "Deactivating Polarsteps Importer..."
+msgstr ""
+
 #: includes/class-importer-plugin.php:38
 msgid "Every hour"
 msgid_plural "Every %d hours"
 msgstr[0] ""
 msgstr[1] ""
+
+#: includes/class-importer-plugin.php:180
+msgid "%d new post was imported."
+msgid_plural "%d new posts were imported."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-importer-plugin.php:137
+msgid "Found %d new post to import."
+msgid_plural "Found %d new posts to import."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-importer-plugin.php:52
+msgid "Recurring cron job re-scheduled after settings update."
+msgstr ""
+
+#: includes/class-importer-plugin.php:93
+msgid "Trip ID or Remember Token is missing."
+msgstr ""
+
+
+#: includes/class-importer-plugin.php:248
+msgid "Recurring cron job re-scheduled after import."
 
 #: includes/class-importer-plugin.php:65
 msgid "You do not have permission to perform this action."
@@ -38,7 +79,75 @@ msgstr ""
 msgid "Manual import triggered."
 msgstr ""
 
+#: includes/class-importer-plugin.php:153
+msgid "Importing post %1$d of %2$d: \"%3$s\""
+msgstr ""
+
+#: includes/class-importer-api.php:20
+msgid "API Error: %s"
+msgstr ""
+
+#: includes/class-importer-api.php:25
+msgid "Could not parse API response: %s"
+msgstr ""
+
+#: includes/class-importer-api.php:29
+msgid "Debug mode active. Data received:"
+msgstr ""
+
+#: includes/class-importer-api.php:34
+msgid "API Request to: %1$s | Args: %2$s"
+msgstr ""
+
+#: includes/class-importer-api.php:35
+msgid "API Response (raw):"
+msgstr ""
+
+#: includes/class-importer-api.php:36
+msgid "Data:"
+msgstr ""
+
+#: includes/class-importer-api.php:48
+msgid "Steps found:"
+msgstr ""
+
+#: includes/class-importer-api.php:71
+msgid "Checking for Step ID %1$s in post type %2$s: Found %3$d posts."
+msgstr ""
+
+#: includes/class-importer-api.php:120
+msgid "Error downloading image: %s"
+msgstr ""
+
+#: includes/class-importer-api.php:130
+msgid "Error uploading image: %s"
+msgstr ""
+
+#: includes/class-importer-api.php:137
+msgid "Image \"%1$s\" successfully attached to post %2$d with ID %3$d."
+msgstr ""
+
+
+#: includes/class-importer-settings.php:143
+msgid "Max Steps per Run"
+msgstr ""
+
+#: includes/class-importer-settings.php:314
+msgid "Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps."
+msgstr ""
 #: includes/class-importer-settings.php:11
+
+#: includes/class-importer-settings.php:79
+msgid "Image Import Mode"
+msgstr ""
+
+#: includes/class-importer-settings.php:326
+msgid "Append as gallery shortcode"
+msgstr ""
+
+#: includes/class-importer-settings.php:327
+msgid "Embed individually in content"
+msgstr ""
 #: includes/class-importer-settings.php:12
 #: includes/class-importer-settings.php:161
 msgid "Polarsteps Importer"
@@ -93,6 +202,10 @@ msgid ""
 "The import has been started in the background. The logs will be updated "
 "shortly."
 msgstr ""
+
+#: includes/class-importer-settings.php:177
+msgid "The manual import has been successfully completed."
+msgstr ""
 #: includes/class-importer-settings.php:167
 msgid "Save Settings"
 msgstr ""
@@ -117,6 +230,9 @@ msgstr ""
 msgid "Clear Logs"
 msgstr ""
 
+#: includes/class-importer-settings.php:256
+msgid "Refresh Logs"
+msgstr ""
 #: includes/class-importer-settings.php:211
 msgid ""
 "Enter your Remember Token. It will be stored encrypted and will not be "
@@ -176,4 +292,7 @@ msgstr ""
 
 #: includes/class-importer-settings.php:341
 msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
+
+#: includes/class-importer-settings.php:329
+msgid "Choose how images are added to the post."
 msgstr ""

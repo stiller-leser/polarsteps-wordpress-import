@@ -1,85 +1,7 @@
 <?php
-class Polarsteps_Importer_Plugin {
+class Polarsteps_Importer_Process {
 
-    public static function activate() {
-        // Plant den wiederkehrenden Job, wenn noch keiner existiert.
-        if (!wp_next_scheduled('polarsteps_importer_cron_hook')) {
-            wp_schedule_event(time(), 'polarsteps_interval', 'polarsteps_importer_cron_hook');
-            // Diese Nachricht ist spezifisch für die Aktivierung.
-            Polarsteps_Importer_Settings::log_message(__('Recurring cron job scheduled on plugin activation.', 'polarsteps-importer'));
-        }
-    }
-
-    public static function deactivate() {
-        Polarsteps_Importer_Settings::log_message(__('Deactivating Polarsteps Importer...', 'polarsteps-importer'));
-        wp_clear_scheduled_hook('polarsteps_importer_cron_hook');
-        delete_option('polarsteps_importer_logs');
-        delete_option('polarsteps_importer_settings');
-    }
-
-    public function __construct() {
-        add_action('init', [$this, 'load_plugin_textdomain']);
-        add_action('polarsteps_importer_cron_hook', [$this, 'import_steps']);
-        add_filter('cron_schedules', [$this, 'add_custom_cron_interval']);
-        add_action('admin_post_polarsteps_importer_run_now', [$this, 'handle_run_now']);
-    }
-
-    public static function add_custom_cron_interval($schedules) {
-        $options = get_option('polarsteps_importer_settings');
-        $interval = $options['polarsteps_update_interval'] ?? 1;
-        $schedules['polarsteps_interval'] = [
-            'interval' => $interval * HOUR_IN_SECONDS,
-            'display'  => sprintf(
-                /* translators: %d: number of hours */
-                _n('Every hour', 'Every %d hours', $interval, 'polarsteps-importer'),
-                $interval
-            ),
-        ];
-        return $schedules;
-    }
-
-    public static function reschedule_cron_job($new_interval_hours) {
-        // Finde den Zeitpunkt des nächsten geplanten Events, bevor wir es löschen.
-        $next_timestamp = wp_next_scheduled('polarsteps_importer_cron_hook');
-
-        // Lösche den alten Cron-Job.
-        self::clear_cron_job();
-
-        // Plane den neuen Job. Wenn bereits einer geplant war, übernehme den Zeitpunkt.
-        // Ansonsten starte ihn jetzt (falls aus irgendeinem Grund keiner existiert).
-        $schedule_time = ($next_timestamp) ? $next_timestamp : time();
-        wp_schedule_event($schedule_time, 'polarsteps_interval', 'polarsteps_importer_cron_hook');
-        Polarsteps_Importer_Settings::log_message(__('Recurring cron job re-scheduled after settings update.', 'polarsteps-importer'));
-    }
-
-    private static function clear_cron_job() {
-        wp_clear_scheduled_hook('polarsteps_importer_cron_hook');
-    }
-
-    public function handle_run_now() {
-        if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to perform this action.', 'polarsteps-importer'));
-        }
-        check_admin_referer('polarsteps_importer_run_now');
-
-        // Pausiere den wiederkehrenden Job, um Konflikte zu vermeiden.
-        self::clear_cron_job();
-
-        // Starte den Import sofort (asynchron im Hintergrund).
-        // Dies verhindert Timeouts bei großen Importen.
-        wp_schedule_single_event(time(), 'polarsteps_importer_cron_hook');
-        Polarsteps_Importer_Settings::log_message(__('Manual import triggered.', 'polarsteps-importer'));
-
-        // Leite den Nutzer zurück. Der wiederkehrende Job wird nach dem Import neu geplant.
-        wp_redirect(admin_url('options-general.php?page=polarsteps-importer&manual_run_triggered=1'));
-        exit;
-    }
-    
-    public function load_plugin_textdomain() {
-        load_plugin_textdomain('polarsteps-importer', false, dirname(plugin_basename(__DIR__)) . '/languages/');
-    }
-
-    public function import_steps() {
+    public static function run() {
         $options = get_option('polarsteps_importer_settings');
         $trip_id = $options['polarsteps_trip_id'] ?? '';
         $remember_token = $options['polarsteps_remember_token'] ?? '';
@@ -92,17 +14,17 @@ class Polarsteps_Importer_Plugin {
         $image_import_mode = $options['polarsteps_image_import_mode'] ?? 'gallery';
         $steps_per_run = (int) ($options['polarsteps_steps_per_run'] ?? 10);
 
-
         if (empty($trip_id) || empty($remember_token)) {
             Polarsteps_Importer_Settings::log_message(__('Trip ID or Remember Token is missing.', 'polarsteps-importer'));
             return;
         }
 
         $remember_token_decrypted = Polarsteps_Importer_Security::decrypt($remember_token);
-
         $steps = Polarsteps_Importer_API::fetch_steps($trip_id, $remember_token_decrypted, $debug_mode);
 
         if (!$steps) {
+            // Wenn keine Steps gefunden wurden, trotzdem den Cron-Job neu planen, um es später erneut zu versuchen.
+            self::finalize_import(0);
             return;
         }
 
@@ -143,7 +65,7 @@ class Polarsteps_Importer_Plugin {
 
         if ($total_found === 0) {
             // Nichts zu tun, beende den Importvorgang hier.
-            $this->finalize_import(0);
+            self::finalize_import(0);
             return;
         }
 
@@ -153,7 +75,8 @@ class Polarsteps_Importer_Plugin {
                 /* translators: 1: current post number, 2: total posts number, 3: post title */
                 __('Importing post %1$d of %2$d: "%3$s"', 'polarsteps-importer'),
                 $index + 1,
-                $total_to_import
+                $total_to_import,
+                $step['name']
             );
             Polarsteps_Importer_Settings::log_message($log_message);
 
@@ -196,10 +119,10 @@ class Polarsteps_Importer_Plugin {
             }
         }
 
-        $this->finalize_import($imported_count);
+        self::finalize_import($imported_count);
     }
 
-    private function finalize_import($imported_count) {
+    private static function finalize_import($imported_count) {
         Polarsteps_Importer_Settings::log_message(
             sprintf(
                 /* translators: %d is the number of imported posts. */
@@ -214,8 +137,8 @@ class Polarsteps_Importer_Plugin {
         );
 
         // Nach Abschluss des Imports den wiederkehrenden Cron-Job neu planen.
-        self::clear_cron_job(); // Zuerst alle alten Jobs entfernen.
-        wp_schedule_event(time(), 'polarsteps_interval', 'polarsteps_importer_cron_hook');
+        Polarsteps_Importer_Cron::clear_job(); // Zuerst alle alten Jobs entfernen.
+        wp_schedule_event(time(), 'polarsteps_interval', Polarsteps_Importer_Cron::HOOK);
         Polarsteps_Importer_Settings::log_message(__('Recurring cron job re-scheduled after import.', 'polarsteps-importer'));
 
         // Setze ein Transient, um den erfolgreichen Abschluss zu signalisieren. Gültig für 1 Minute.

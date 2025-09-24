@@ -26,11 +26,43 @@ msgstr "Polarsteps Importer"
 msgid "Import your Polarsteps trips as WordPress posts, including images, location data, and original publication dates."
 msgstr "Importiere deine Polarsteps-Reisen als WordPress-Beiträge, inklusive Bildern, Ortsdaten und originalen Veröffentlichungsdaten."
 
+#: includes/class-importer-plugin.php:8
+msgid "Recurring cron job scheduled on plugin activation."
+msgstr "Wiederkehrender Cron-Job bei Plugin-Aktivierung geplant."
+
+#: includes/class-importer-plugin.php:15
+msgid "Deactivating Polarsteps Importer..."
+msgstr "Deaktiviere Polarsteps Importer..."
+
 #: includes/class-importer-plugin.php:38
 msgid "Every hour"
 msgid_plural "Every %d hours"
 msgstr[0] "Jede Stunde"
 msgstr[1] "Alle %d Stunden"
+
+#: includes/class-importer-plugin.php:180
+msgid "%d new post was imported."
+msgid_plural "%d new posts were imported."
+msgstr[0] "%d neuer Beitrag wurde importiert."
+msgstr[1] "%d neue Beiträge wurden importiert."
+
+#: includes/class-importer-plugin.php:137
+msgid "Found %d new post to import."
+msgid_plural "Found %d new posts to import."
+msgstr[0] "%d neuer Beitrag zum Importieren gefunden."
+msgstr[1] "%d neue Beiträge zum Importieren gefunden."
+
+#: includes/class-importer-plugin.php:52
+msgid "Recurring cron job re-scheduled after settings update."
+msgstr "Wiederkehrender Cron-Job nach Einstellungs-Update neu geplant."
+
+#: includes/class-importer-plugin.php:93
+msgid "Trip ID or Remember Token is missing."
+msgstr "Trip-ID oder Remember Token fehlt."
+
+#: includes/class-importer-plugin.php:248
+msgid "Recurring cron job re-scheduled after import."
+msgstr "Wiederkehrender Cron-Job nach dem Import neu geplant."
 
 #: includes/class-importer-plugin.php:65
 msgid "You do not have permission to perform this action."
@@ -39,6 +71,74 @@ msgstr "Du hast keine Berechtigung, diese Aktion auszuführen."
 #: includes/class-importer-plugin.php:65
 msgid "Manual import triggered."
 msgstr "Manueller Import wurde angestoßen."
+
+#: includes/class-importer-plugin.php:153
+msgid "Importing post %1$d of %2$d: \"%3$s\""
+msgstr "Importiere Beitrag %1$d von %2$d: \"%3$s\""
+
+#: includes/class-importer-api.php:20
+msgid "API Error: %s"
+msgstr "API-Fehler: %s"
+
+#: includes/class-importer-api.php:25
+msgid "Could not parse API response: %s"
+msgstr "API-Antwort konnte nicht geparsed werden: %s"
+
+#: includes/class-importer-api.php:29
+msgid "Debug mode active. Data received:"
+msgstr "Debug-Modus aktiv. Empfangene Daten:"
+
+#: includes/class-importer-api.php:34
+msgid "API Request to: %1$s | Args: %2$s"
+msgstr "API-Anfrage an: %1$s | Args: %2$s"
+
+#: includes/class-importer-api.php:35
+msgid "API Response (raw):"
+msgstr "API-Antwort (roh):"
+
+#: includes/class-importer-api.php:36
+msgid "Data:"
+msgstr "Daten:"
+
+#: includes/class-importer-api.php:48
+msgid "Steps found:"
+msgstr "Steps gefunden:"
+
+#: includes/class-importer-api.php:71
+msgid "Checking for Step ID %1$s in post type %2$s: Found %3$d posts."
+msgstr "Prüfe auf Step-ID %1$s im Beitragstyp %2$s: %3$d Beiträge gefunden."
+
+#: includes/class-importer-api.php:120
+msgid "Error downloading image: %s"
+msgstr "Fehler beim Herunterladen des Bildes: %s"
+
+#: includes/class-importer-api.php:130
+msgid "Error uploading image: %s"
+msgstr "Fehler beim Hochladen des Bildes: %s"
+
+#: includes/class-importer-api.php:137
+msgid "Image \"%1$s\" successfully attached to post %2$d with ID %3$d."
+msgstr "Bild \"%1$s\" erfolgreich an Beitrag %2$d mit ID %3$d angehängt."
+
+#: includes/class-importer-settings.php:143
+msgid "Max Steps per Run"
+msgstr "Maximale Steps pro Durchlauf"
+
+#: includes/class-importer-settings.php:314
+msgid "Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps."
+msgstr "Limitiert die Anzahl der neuen Steps, die in einem Durchlauf importiert werden. Hilft, Timeouts auf Servern mit vielen Steps zu vermeiden."
+
+#: includes/class-importer-settings.php:79
+msgid "Image Import Mode"
+msgstr "Bild-Importmodus"
+
+#: includes/class-importer-settings.php:326
+msgid "Append as gallery shortcode"
+msgstr "Als Galerie-Shortcode anhängen"
+
+#: includes/class-importer-settings.php:327
+msgid "Embed individually in content"
+msgstr "Einzeln in den Inhalt einbetten"
 
 #: includes/class-importer-settings.php:11
 #: includes/class-importer-settings.php:12
@@ -94,6 +194,10 @@ msgstr "Logs wurden gelöscht."
 msgid "The import has been started in the background. The logs will be updated shortly."
 msgstr "Der Import wurde im Hintergrund gestartet. Die Logs werden in Kürze aktualisiert."
 
+#: includes/class-importer-settings.php:177
+msgid "The manual import has been successfully completed."
+msgstr "Der manuelle Import wurde erfolgreich abgeschlossen."
+
 #: includes/class-importer-settings.php:186
 msgid "Save Settings"
 msgstr "Einstellungen speichern"
@@ -117,6 +221,10 @@ msgstr "Keine Logs gefunden. Führe einen Import durch, um Logs zu generieren."
 #: includes/class-importer-settings.php:219
 msgid "Clear Logs"
 msgstr "Logs löschen"
+
+#: includes/class-importer-settings.php:256
+msgid "Refresh Logs"
+msgstr "Logs aktualisieren"
 
 #: includes/class-importer-settings.php:233
 msgid "Enter your Remember Token. It will be stored encrypted and will not be displayed again."
@@ -174,3 +282,7 @@ msgstr "Aktiviert den Debug-Modus. Es werden keine Beiträge erstellt, aber die 
 #: includes/class-importer-settings.php:363
 msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
 msgstr "Trage deine Polarsteps Trip-ID und deinen Remember Token ein, um Steps als WordPress-Beiträge zu importieren."
+
+#: includes/class-importer-settings.php:329
+msgid "Choose how images are added to the post."
+msgstr "Wähle aus, wie Bilder zum Beitrag hinzugefügt werden."
