@@ -5,26 +5,34 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Polarsteps Importer 1.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-"
+"importer\n"
+"POT-Creation-Date: 2024-05-21 10:00+0000\n"
+"PO-Revision-Date: 2025-09-26 02:51+0200\n"
 "Last-Translator: Kaj-Sören Mossdorf <kaj@mossdorf.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-21 10:00+0000\n"
-"PO-Revision-Date: 2024-05-21 10:30+0000\n"
-"X-Generator: Gemini Code Assist\n"
-"X-Domain: polarsteps-importer\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.7\n"
+"X-Domain: polarsteps-importer\n"
 
 #. Plugin Name of the plugin
+#: includes/class-importer-settings.php:11
+#: includes/class-importer-settings.php:12
+#: includes/class-importer-settings.php:180
 msgid "Polarsteps Importer"
 msgstr "Polarsteps Importer"
 
 #. Description of the plugin
-msgid "Import your Polarsteps trips as WordPress posts, including images, location data, and original publication dates."
-msgstr "Importiere deine Polarsteps-Reisen als WordPress-Beiträge, inklusive Bildern, Ortsdaten und originalen Veröffentlichungsdaten."
+msgid ""
+"Import your Polarsteps trips as WordPress posts, including images, location "
+"data, and original publication dates."
+msgstr ""
+"Importiere deine Polarsteps-Reisen als WordPress-Beiträge, inklusive "
+"Bildern, Ortsdaten und originalen Veröffentlichungsdaten."
 
 #: includes/class-importer-plugin.php:8
 msgid "Recurring cron job scheduled on plugin activation."
@@ -125,8 +133,12 @@ msgid "Max Steps per Run"
 msgstr "Maximale Steps pro Durchlauf"
 
 #: includes/class-importer-settings.php:314
-msgid "Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps."
-msgstr "Limitiert die Anzahl der neuen Steps, die in einem Durchlauf importiert werden. Hilft, Timeouts auf Servern mit vielen Steps zu vermeiden."
+msgid ""
+"Limits the number of new steps to import in a single run. Helps prevent "
+"timeouts on servers with many steps."
+msgstr ""
+"Limitiert die Anzahl der neuen Steps, die in einem Durchlauf importiert "
+"werden. Hilft, Timeouts auf Servern mit vielen Steps zu vermeiden."
 
 #: includes/class-importer-settings.php:79
 msgid "Image Import Mode"
@@ -139,12 +151,6 @@ msgstr "Als Galerie-Shortcode anhängen"
 #: includes/class-importer-settings.php:327
 msgid "Embed individually in content"
 msgstr "Einzeln in den Inhalt einbetten"
-
-#: includes/class-importer-settings.php:11
-#: includes/class-importer-settings.php:12
-#: includes/class-importer-settings.php:180
-msgid "Polarsteps Importer"
-msgstr "Polarsteps Importer"
 
 #: includes/class-importer-settings.php:26
 msgid "Polarsteps Settings"
@@ -191,8 +197,12 @@ msgid "Logs have been cleared."
 msgstr "Logs wurden gelöscht."
 
 #: includes/class-importer-settings.php:178
-msgid "The import has been started in the background. The logs will be updated shortly."
-msgstr "Der Import wurde im Hintergrund gestartet. Die Logs werden in Kürze aktualisiert."
+msgid ""
+"The import has been started in the background. The logs will be updated "
+"shortly."
+msgstr ""
+"Der Import wurde im Hintergrund gestartet. Die Logs werden in Kürze "
+"aktualisiert."
 
 #: includes/class-importer-settings.php:177
 msgid "The manual import has been successfully completed."
@@ -227,8 +237,12 @@ msgid "Refresh Logs"
 msgstr "Logs aktualisieren"
 
 #: includes/class-importer-settings.php:233
-msgid "Enter your Remember Token. It will be stored encrypted and will not be displayed again."
-msgstr "Trage dein Remember Token ein. Es wird verschlüsselt gespeichert und nicht wieder angezeigt."
+msgid ""
+"Enter your Remember Token. It will be stored encrypted and will not be "
+"displayed again."
+msgstr ""
+"Trage dein Remember Token ein. Es wird verschlüsselt gespeichert und nicht "
+"wieder angezeigt."
 
 #: includes/class-importer-settings.php:239
 msgid "Enable to skip steps without a title."
@@ -251,8 +265,11 @@ msgid "Published"
 msgstr "Veröffentlicht"
 
 #: includes/class-importer-settings.php:272
-msgid "Select the post type into which the Polarsteps steps should be imported."
-msgstr "Wähle den Beitragstyp aus, in den die Polarsteps-Steps importiert werden sollen."
+msgid ""
+"Select the post type into which the Polarsteps steps should be imported."
+msgstr ""
+"Wähle den Beitragstyp aus, in den die Polarsteps-Steps importiert werden "
+"sollen."
 
 #: includes/class-importer-settings.php:273
 msgid "By default, \"post\" is used."
@@ -276,12 +293,20 @@ msgid "The selected post type has no categories"
 msgstr "Der ausgewählte Beitragstyp hat keine Kategorien"
 
 #: includes/class-importer-settings.php:359
-msgid "Enables debug mode. No posts will be created, but the API response will be logged."
-msgstr "Aktiviert den Debug-Modus. Es werden keine Beiträge erstellt, aber die API-Antwort wird geloggt."
+msgid ""
+"Enables debug mode. No posts will be created, but the API response will be "
+"logged."
+msgstr ""
+"Aktiviert den Debug-Modus. Es werden keine Beiträge erstellt, aber die API-"
+"Antwort wird geloggt."
 
 #: includes/class-importer-settings.php:363
-msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
-msgstr "Trage deine Polarsteps Trip-ID und deinen Remember Token ein, um Steps als WordPress-Beiträge zu importieren."
+msgid ""
+"Enter your Polarsteps Trip ID and Remember Token to import steps as "
+"WordPress posts."
+msgstr ""
+"Trage deine Polarsteps Trip-ID und deinen Remember Token ein, um Steps als "
+"WordPress-Beiträge zu importieren."
 
 #: includes/class-importer-settings.php:329
 msgid "Choose how images are added to the post."

@@ -46,25 +46,17 @@ class Polarsteps_Importer_Settings {
         );
 
         add_settings_field(
+            'polarsteps_update_interval',
+            __('Update Interval (in hours)', 'polarsteps-importer'),
+            [$this, 'update_interval_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
             'polarsteps_steps_per_run',
             __('Max Steps per Run', 'polarsteps-importer'),
             [$this, 'steps_per_run_render'],
-            'polarsteps-importer',
-            'polarsteps_importer_section'
-        );
-
-        add_settings_field(
-            'polarsteps_image_import_mode',
-            __('Image Import Mode', 'polarsteps-importer'),
-            [$this, 'image_import_mode_render'],
-            'polarsteps-importer',
-            'polarsteps_importer_section'
-        );
-
-        add_settings_field(
-            'polarsteps_ignore_no_title',
-            __('Ignore steps without title', 'polarsteps-importer'),
-            [$this, 'ignore_no_title_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
         );
@@ -78,17 +70,33 @@ class Polarsteps_Importer_Settings {
         );
 
         add_settings_field(
-            'polarsteps_post_type',
-            __('Post Type', 'polarsteps-importer'),
-            [$this, 'post_type_render'], // Neues Feld für Post-Type-Auswahl
+            'polarsteps_ignore_no_title',
+            __('Ignore steps without title', 'polarsteps-importer'),
+            [$this, 'ignore_no_title_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
         );
 
         add_settings_field(
-            'polarsteps_post_category',
-            __('Category', 'polarsteps-importer'),
-            [$this, 'post_category_render'], // Neues Feld für Kategorie-Auswahl
+            'polarsteps_disable_image_import',
+            __('Disable Image Import', 'polarsteps-importer'),
+            [$this, 'disable_image_import_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
+            'polarsteps_image_import_mode',
+            __('Image Import Mode', 'polarsteps-importer'),
+            [$this, 'image_import_mode_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
+            'polarsteps_post_type',
+            __('Post Type', 'polarsteps-importer'),
+            [$this, 'post_type_render'], // Neues Feld für Post-Type-Auswahl
             'polarsteps-importer',
             'polarsteps_importer_section'
         );
@@ -102,9 +110,25 @@ class Polarsteps_Importer_Settings {
         );
 
         add_settings_field(
-            'polarsteps_update_interval',
-            __('Update Interval (in hours)', 'polarsteps-importer'),
-            [$this, 'update_interval_render'],
+            'polarsteps_post_category',
+            __('Category', 'polarsteps-importer'),
+            [$this, 'post_category_render'], // Neues Feld für Kategorie-Auswahl
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
+            'polarsteps_use_location_detail_as_category',
+            __('Use location detail as category', 'polarsteps-importer'),
+            [$this, 'use_location_detail_as_category_render'],
+            'polarsteps-importer',
+            'polarsteps_importer_section'
+        );
+
+        add_settings_field(
+            'polarsteps_leaflet_map',
+            __('Add Leaflet Map', 'polarsteps-importer'),
+            [$this, 'leaflet_map_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
         );
@@ -152,7 +176,16 @@ class Polarsteps_Importer_Settings {
         <div class="wrap">
             <h1><?php esc_html_e('Polarsteps Importer', 'polarsteps-importer'); ?></h1>
 
-            <hr>
+            <!-- Formular für Einstellungen -->
+            <form method="post" action="options.php">
+                <?php
+                settings_fields('polarsteps_importer');
+                do_settings_sections('polarsteps-importer');
+                submit_button(__('Save Settings', 'polarsteps-importer'), 'primary', 'submit', true, ['style' => 'margin-top: 20px;']);
+                ?>
+            </form>
+
+            <hr style="margin-top: 20px;">
 
             <!-- Manueller Import -->
             <h3><?php esc_html_e('Manual Import', 'polarsteps-importer'); ?></h3>
@@ -163,19 +196,7 @@ class Polarsteps_Importer_Settings {
             </form>
 
             <hr>
-
-            <!-- Logs-Anzeige -->
             <h3><?php esc_html_e('Debug Logs', 'polarsteps-importer'); ?></h3>
-            
-            <!-- Formular für Einstellungen -->
-            <form method="post" action="options.php">
-                <?php
-                settings_fields('polarsteps_importer');
-                do_settings_sections('polarsteps-importer');
-                submit_button(__('Save Settings', 'polarsteps-importer'));
-                ?>
-            </form>
-
             <?php $this->display_filtered_logs(); ?>
         </div>
         <?php
@@ -215,12 +236,23 @@ class Polarsteps_Importer_Settings {
 
     public function remember_token_render() {
         $options = get_option('polarsteps_importer_settings');
-        $placeholder = !empty(Polarsteps_Importer_Security::decrypt($options['polarsteps_remember_token'])) ? '••••••••••••' : '';
+        $decrypted_token = Polarsteps_Importer_Security::decrypt($options['polarsteps_remember_token'] ?? '');
+        $placeholder = __('No token found', 'polarsteps-importer');
+        if (!empty($decrypted_token)) {
+            $placeholder = substr($decrypted_token, 0, 3) . str_repeat('*', strlen($decrypted_token) - 3);
+        }
         echo '<input type="text" name="polarsteps_importer_remember_token" value="" placeholder="' . esc_attr($placeholder) . '">';
-        if (!empty($placeholder)) {
+        if (!empty($decrypted_token)) {
             echo '<p class="description">' . esc_html__('A token is already saved. To change it, enter a new one.', 'polarsteps-importer') . '</p>';
         }
         echo '<p class="description">' . esc_html__('Your Remember Token will be stored encrypted and will not be displayed again.', 'polarsteps-importer') . '</p>';
+    }
+
+    public function disable_image_import_render() {
+        $options = get_option('polarsteps_importer_settings');
+        echo '<input type="checkbox" id="polarsteps_disable_image_import" name="polarsteps_importer_settings[polarsteps_disable_image_import]" ' .
+             checked($options['polarsteps_disable_image_import'] ?? false, true, false) . ' value="1">';
+        echo '<p class="description">' . esc_html__('Check this to prevent any images from being imported.', 'polarsteps-importer') . '</p>';
     }
 
     public function ignore_no_title_render() {
@@ -238,6 +270,13 @@ class Polarsteps_Importer_Settings {
         echo '<p class="description">' . esc_html__('Step IDs to ignore (comma-separated).', 'polarsteps-importer') . '</p>';
     }
 
+    public function use_location_detail_as_category_render() {
+        $options = get_option('polarsteps_importer_settings');
+        echo '<input type="checkbox" id="polarsteps_use_location_detail_as_category" name="polarsteps_importer_settings[polarsteps_use_location_detail_as_category]" ' .
+             checked($options['polarsteps_use_location_detail_as_category'] ?? false, true, false) . ' value="1">';
+        echo '<p class="description">' . esc_html__('If checked, the "detail" field from the location data will be used to set the post category in addition to the manual selection below.', 'polarsteps-importer') . '</p>';
+    }
+
     public function update_interval_render() {
         $options = get_option('polarsteps_importer_settings');
         echo '<input type="number" name="polarsteps_importer_settings[polarsteps_update_interval]" min="1" value="' . esc_attr($options['polarsteps_update_interval'] ?? 1) . '">';
@@ -252,12 +291,29 @@ class Polarsteps_Importer_Settings {
     public function image_import_mode_render() {
         $options = get_option('polarsteps_importer_settings');
         $mode = $options['polarsteps_image_import_mode'] ?? 'gallery';
+        $disable_image_import = $options['polarsteps_disable_image_import'] ?? false;
+        $style = $disable_image_import ? 'style="display:none;"' : '';
         ?>
-        <select name="polarsteps_importer_settings[polarsteps_image_import_mode]">
-            <option value="gallery" <?php selected($mode, 'gallery'); ?>><?php esc_html_e('Append as gallery shortcode', 'polarsteps-importer'); ?></option>
-            <option value="embed" <?php selected($mode, 'embed'); ?>><?php esc_html_e('Embed individually in content', 'polarsteps-importer'); ?></option>
-        </select>
-        <p class="description"><?php esc_html_e('Choose how images are added to the post.', 'polarsteps-importer'); ?></p>
+        <div id="polarsteps_image_import_mode_wrapper" <?php echo $style; ?>>
+            <select name="polarsteps_importer_settings[polarsteps_image_import_mode]">
+                <option value="gallery" <?php selected($mode, 'gallery'); ?>><?php esc_html_e('Append as gallery shortcode', 'polarsteps-importer'); ?></option>
+                <option value="embed" <?php selected($mode, 'embed'); ?>><?php esc_html_e('Embed individually in content', 'polarsteps-importer'); ?></option>
+            </select>
+            <p class="description"><?php esc_html_e('Choose how images are added to the post.', 'polarsteps-importer'); ?></p>
+        </div>
+        <script>
+            jQuery(document).ready(function($) {
+                $('#polarsteps_disable_image_import').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        // Find the closest tr parent and hide it
+                        $('select[name="polarsteps_importer_settings[polarsteps_image_import_mode]"]').closest('tr').hide();
+                    } else {
+                        // Find the closest tr parent and show it
+                        $('select[name="polarsteps_importer_settings[polarsteps_image_import_mode]"]').closest('tr').show();
+                    }
+                }).trigger('change'); // Trigger on load
+            });
+        </script>
         <?php
     }
 
@@ -320,20 +376,25 @@ class Polarsteps_Importer_Settings {
         ]);
 
         ?>
-        <select name="polarsteps_importer_settings[polarsteps_post_category]" id="polarsteps_post_category">
-            <option value="0">-- <?php esc_html_e('No Category', 'polarsteps-importer'); ?> --</option>
-            <?php foreach ($terms as $term): ?>
-                <option value="<?php echo esc_attr($term->term_id); ?>" <?php selected($category_id, $term->term_id); ?>>
-                    <?php echo esc_html($term->name); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <p class="description">
-            <?php esc_html_e('Select a category for the imported posts.', 'polarsteps-importer'); ?>
-        </p>
+        <div id="polarsteps_post_category_wrapper">
+            <select name="polarsteps_importer_settings[polarsteps_post_category]" id="polarsteps_post_category">
+                <option value="0">-- <?php esc_html_e('No Category', 'polarsteps-importer'); ?> --</option>
+                <?php foreach ($terms as $term): ?>
+                    <option value="<?php echo esc_attr($term->term_id); ?>" <?php selected($category_id, $term->term_id); ?>>
+                        <?php echo esc_html($term->name); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <p class="description">
+                <?php esc_html_e('Select a category for the imported posts.', 'polarsteps-importer'); ?>
+            </p>
+        </div>
 
         <script>
         jQuery(document).ready(function($) {
+            // Note: The following script for dynamically updating categories based on post type
+            // seems to have some issues (e.g., missing data-taxonomies attribute).
+            // This part might need a review in the future.
             $('#polarsteps_post_type').change(function() {
                 var postType = $(this).val();
                 var taxonomies = JSON.parse($(this).find(':selected').attr('data-taxonomies'));
@@ -378,6 +439,25 @@ class Polarsteps_Importer_Settings {
         <?php
     }
 
+    public function leaflet_map_render() {
+        $options = get_option('polarsteps_importer_settings');
+        $is_leaflet_active = is_plugin_active('leaflet-map/leaflet-map.php');
+
+        echo '<input type="checkbox" name="polarsteps_importer_settings[polarsteps_leaflet_map]" ' .
+             checked($options['polarsteps_leaflet_map'] ?? false, true, false) . ' value="1" ' .
+             disabled(!$is_leaflet_active, true, false) . '>';
+
+        if ($is_leaflet_active) {
+            echo '<p class="description">' . esc_html__('Adds a Leaflet map with the step\'s location to the end of the post.', 'polarsteps-importer') . '</p>';
+        } else {
+            $install_url = admin_url('plugin-install.php?tab=search&s=leaflet-map');
+            echo '<p class="description">' . sprintf(
+                wp_kses(__('The <a href="%s" target="_blank">Leaflet Map</a> plugin must be installed and activated to use this feature.', 'polarsteps-importer'), ['a' => ['href' => [], 'target' => []]]),
+                esc_url($install_url)
+            ) . '</p>';
+        }
+    }
+
     public function debug_mode_render() {
         $options = get_option('polarsteps_importer_settings');
         echo '<input type="checkbox" name="polarsteps_importer_settings[polarsteps_debug_mode]" ' . checked($options['polarsteps_debug_mode'] ?? false, true, false) . ' value="1">';
@@ -389,15 +469,28 @@ class Polarsteps_Importer_Settings {
     }
 
     public function save_settings($settings) {
+        $current_options = get_option('polarsteps_importer_settings');
+
         if (isset($_POST['polarsteps_importer_remember_token']) && !empty($_POST['polarsteps_importer_remember_token'])) {
             $settings['polarsteps_remember_token'] = Polarsteps_Importer_Security::encrypt($_POST['polarsteps_importer_remember_token']);
         } else {
-            $options = get_option('polarsteps_importer_settings');
-            $settings['polarsteps_remember_token'] = $options['polarsteps_remember_token'] ?? '';   
+            $settings['polarsteps_remember_token'] = $current_options['polarsteps_remember_token'] ?? '';
         }
 
+        $current_interval = $current_options['polarsteps_update_interval'] ?? 1;
         $new_interval = $settings['polarsteps_update_interval'] ?? 1;
-        Polarsteps_Importer_Cron::reschedule_recurring_event();
+        $next_scheduled = wp_next_scheduled(Polarsteps_Importer_Cron::HOOK);
+
+        // Fall 1: Noch kein Cron-Job geplant, aber alle Daten sind jetzt da.
+        if (!$next_scheduled && !empty($settings['polarsteps_trip_id']) && !empty($settings['polarsteps_remember_token'])) {
+            Polarsteps_Importer_Cron::schedule_recurring_event();
+            self::log_message(__('Trip ID and Token set. Recurring cron job scheduled.', 'polarsteps-importer'));
+        } elseif ($new_interval != $current_interval && $next_scheduled) {
+            // Fall 2: Das Intervall hat sich geändert, plane den Job neu.
+            wp_clear_scheduled_hook(Polarsteps_Importer_Cron::HOOK);
+            Polarsteps_Importer_Cron::schedule_recurring_event();
+            self::log_message(__('Update interval changed. Cron job has been rescheduled.', 'polarsteps-importer'));
+        }
 
         return $settings;
     }

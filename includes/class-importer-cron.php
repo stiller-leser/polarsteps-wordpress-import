@@ -19,28 +19,23 @@ class Polarsteps_Importer_Cron {
 
     public static function schedule_recurring_event() {
         if (!wp_next_scheduled(self::HOOK)) {
-            wp_schedule_event(time(), 'polarsteps_interval', self::HOOK);
-            Polarsteps_Importer_Settings::log_message(__('Recurring cron job scheduled on plugin activation.', 'polarsteps-importer'));
+            $options = get_option('polarsteps_importer_settings');
+            $interval_hours = $options['polarsteps_update_interval'] ?? 1;
+            $first_run_time = time() + ($interval_hours * HOUR_IN_SECONDS);
+            wp_schedule_event($first_run_time, 'polarsteps_interval', self::HOOK);
+            Polarsteps_Importer_Settings::log_message(__('Recurring cron job scheduled.', 'polarsteps-importer'));
         }
     }
 
-    public static function reschedule_recurring_event() {
-        $next_timestamp = wp_next_scheduled(self::HOOK);
-        self::clear_job();
-        $schedule_time = ($next_timestamp) ? $next_timestamp : time();
-        wp_schedule_event($schedule_time, 'polarsteps_interval', self::HOOK);
-        Polarsteps_Importer_Settings::log_message(__('Recurring cron job re-scheduled after settings update.', 'polarsteps-importer'));
+    public static function reschedule_after_import() {
+        self::schedule_recurring_event();
     }
 
-    public static function schedule_single_event() {
-        wp_schedule_single_event(time(), self::HOOK);
-    }
-
-    public static function clear_job() {
-        wp_clear_scheduled_hook(self::HOOK);
+    public static function schedule_single_event($args = []) {
+        wp_schedule_single_event(time(), self::HOOK, $args);
     }
 
     public static function unschedule_all() {
-        self::clear_job();
+        wp_clear_scheduled_hook(self::HOOK);
     }
 }

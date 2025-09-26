@@ -7,7 +7,8 @@ class Polarsteps_Importer_Core {
 
         // Cron-Job-Hooks
         add_filter('cron_schedules', ['Polarsteps_Importer_Cron', 'add_custom_cron_interval']);
-        add_action('polarsteps_importer_cron_hook', ['Polarsteps_Importer_Process', 'run']);
+        add_action('polarsteps_importer_cron_hook', ['Polarsteps_Importer_Process', 'run'], 10, 1);
+        add_action('polarsteps_importer_manual_hook', ['Polarsteps_Importer_Process', 'run'], 10, 1);
 
         // Admin-Hooks
         add_action('admin_post_polarsteps_importer_run_now', [$this, 'handle_run_now']);
@@ -29,9 +30,9 @@ class Polarsteps_Importer_Core {
         }
         check_admin_referer('polarsteps_importer_run_now');
 
-        Polarsteps_Importer_Cron::clear_job();
-        Polarsteps_Importer_Cron::schedule_single_event();
-
+        // Plane einen dedizierten, einmaligen Job für den manuellen Import.
+        wp_schedule_single_event(time(), 'polarsteps_importer_manual_hook', [['manual' => true]]);
+        
         Polarsteps_Importer_Settings::log_message(__('Manual import triggered.', 'polarsteps-importer'));
 
         wp_redirect(admin_url('options-general.php?page=polarsteps-importer&manual_run_triggered=1'));

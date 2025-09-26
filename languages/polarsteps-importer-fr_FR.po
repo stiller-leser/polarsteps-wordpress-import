@@ -1,0 +1,228 @@
+# French translation for Polarsteps Importer
+# Copyright (C) 2023 Kaj-Sören Mossdorf
+# This file is distributed under the same license as the Polarsteps Importer package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Polarsteps Importer 1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-wordpress-import\n"
+"POT-Creation-Date: 2023-10-27 10:00:00+00:00\n"
+"PO-Revision-Date: 2025-09-26 02:52+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.7\n"
+
+msgid "Polarsteps Importer"
+msgstr "Importateur Polarsteps"
+
+msgid "Polarsteps Settings"
+msgstr "Réglages Polarsteps"
+
+msgid "Trip ID"
+msgstr "ID du Voyage"
+
+msgid "Remember Token"
+msgstr "Jeton de Session"
+
+msgid "Update Interval (in hours)"
+msgstr "Intervalle de mise à jour (en heures)"
+
+msgid "Max Steps per Run"
+msgstr "Étapes max par exécution"
+
+msgid "Ignore Step IDs"
+msgstr "Ignorer les ID d'étapes"
+
+msgid "Ignore steps without title"
+msgstr "Ignorer les étapes sans titre"
+
+msgid "Disable Image Import"
+msgstr "Désactiver l'importation d'images"
+
+msgid "Image Import Mode"
+msgstr "Mode d'importation des images"
+
+msgid "Post Type"
+msgstr "Type de publication"
+
+msgid "Post Status"
+msgstr "État de la publication"
+
+msgid "Category"
+msgstr "Catégorie"
+
+msgid "Use location detail as category"
+msgstr "Utiliser le détail du lieu comme catégorie"
+
+msgid "Add Leaflet Map"
+msgstr "Ajouter une carte Leaflet"
+
+msgid "Enable Debug Mode"
+msgstr "Activer le mode de débogage"
+
+msgid "Logs have been cleared."
+msgstr "Les journaux ont été effacés."
+
+msgid "The import has been started in the background. The logs will be updated shortly."
+msgstr "L'importation a démarré en arrière-plan. Les journaux seront mis à jour sous peu."
+
+msgid "The manual import has been successfully completed."
+msgstr "L'importation manuelle s'est terminée avec succès."
+
+msgid "Save Settings"
+msgstr "Enregistrer les réglages"
+
+msgid "Manual Import"
+msgstr "Importation manuelle"
+
+msgid "Import Now"
+msgstr "Importer maintenant"
+
+msgid "Debug Logs"
+msgstr "Journaux de débogage"
+
+msgid "No logs found. Run an import to generate logs."
+msgstr "Aucun journal trouvé. Lancez une importation pour générer des journaux."
+
+msgid "Clear Logs"
+msgstr "Effacer les journaux"
+
+msgid "Refresh Logs"
+msgstr "Actualiser les journaux"
+
+msgid "No token found"
+msgstr "Aucun jeton trouvé"
+
+msgid "A token is already saved. To change it, enter a new one."
+msgstr "Un jeton est déjà enregistré. Pour le changer, entrez-en un nouveau."
+
+msgid "Your Remember Token will be stored encrypted and will not be displayed again."
+msgstr "Votre jeton de session sera stocké de manière chiffrée et ne sera plus affiché."
+
+msgid "Check this to prevent any images from being imported."
+msgstr "Cochez ceci pour empêcher l'importation d'images."
+
+msgid "Enable to skip steps without a title."
+msgstr "Activer pour ignorer les étapes sans titre."
+
+msgid "e.g. 12345,67890,11111"
+msgstr "ex: 12345,67890,11111"
+
+msgid "Step IDs to ignore (comma-separated)."
+msgstr "ID d'étapes à ignorer (séparés par des virgules)."
+
+msgid "If checked, the \"detail\" field from the location data will be used to set the post category in addition to the manual selection below."
+msgstr "Si coché, le champ \"détail\" des données de localisation sera utilisé pour définir la catégorie de l'article en plus de la sélection manuelle ci-dessous."
+
+msgid "Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps."
+msgstr "Limite le nombre de nouvelles étapes à importer en une seule fois. Aide à prévenir les temps morts sur les serveurs avec de nombreuses étapes."
+
+msgid "Append as gallery shortcode"
+msgstr "Ajouter comme code court de galerie"
+
+msgid "Embed individually in content"
+msgstr "Intégrer individuellement dans le contenu"
+
+msgid "Choose how images are added to the post."
+msgstr "Choisissez comment les images sont ajoutées à l'article."
+
+msgid "Draft"
+msgstr "Brouillon"
+
+msgid "Published"
+msgstr "Publié"
+
+msgid "Select the post type into which the Polarsteps steps should be imported."
+msgstr "Sélectionnez le type de publication dans lequel les étapes Polarsteps doivent être importées."
+
+msgid "By default, \"post\" is used."
+msgstr "Par défaut, \"article\" est utilisé."
+
+msgid "The selected post type has no categories."
+msgstr "Le type de publication sélectionné n'a pas de catégories."
+
+msgid "No Category"
+msgstr "Aucune catégorie"
+
+msgid "Select a category for the imported posts."
+msgstr "Sélectionnez une catégorie pour les articles importés."
+
+msgid "Adds a Leaflet map with the step's location to the end of the post."
+msgstr "Ajoute une carte Leaflet avec l'emplacement de l'étape à la fin de l'article."
+
+msgid "The <a href=\"%s\" target=\"_blank\">Leaflet Map</a> plugin must be installed and activated to use this feature."
+msgstr "L'extension <a href=\"%s\" target=\"_blank\">Leaflet Map</a> doit être installée et activée pour utiliser cette fonctionnalité."
+
+msgid "Enables debug mode. No posts will be created, but the API response will be logged."
+msgstr "Active le mode de débogage. Aucun article ne sera créé, mais la réponse de l'API sera consignée."
+
+msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
+msgstr "Entrez votre ID de voyage Polarsteps et votre jeton de session pour importer les étapes en tant qu'articles WordPress."
+
+msgid "Trip ID and Token set. Recurring cron job scheduled."
+msgstr "ID de voyage et jeton définis. Tâche cron récurrente planifiée."
+
+msgid "Update interval changed. Cron job has been rescheduled."
+msgstr "Intervalle de mise à jour modifié. La tâche cron a été replanifiée."
+
+msgid "Every hour"
+msgid_plural "Every %d hours"
+msgstr[0] "Toutes les heures"
+msgstr[1] "Toutes les %d heures"
+
+msgid "Recurring cron job scheduled."
+msgstr "Tâche cron récurrente planifiée."
+
+msgid "Manual import triggered."
+msgstr "Importation manuelle déclenchée."
+
+msgid "You do not have permission to perform this action."
+msgstr "Vous n'avez pas la permission d'effectuer cette action."
+
+msgid "Trip ID or Remember Token is missing."
+msgstr "L'ID du voyage ou le jeton de session est manquant."
+
+msgid "Found %d new post to import."
+msgid_plural "Found %d new posts to import."
+msgstr[0] "%d nouvel article trouvé à importer."
+msgstr[1] "%d nouveaux articles trouvés à importer."
+
+msgid "Importing post %1$d of %2$d: \"%3$s\""
+msgstr "Importation de l'article %1$d sur %2$d : \"%3$s\""
+
+msgid "%d new post was imported."
+msgid_plural "%d new posts were imported."
+msgstr[0] "%d nouvel article a été importé."
+msgstr[1] "%d nouveaux articles ont été importés."
+
+msgid "Import run finished. %d steps remaining for the next run."
+msgstr "Exécution de l'importation terminée. Il reste %d étapes pour la prochaine exécution."
+
+msgid "Manual import finished."
+msgstr "Importation manuelle terminée."
+
+msgid "All steps imported. Re-scheduling recurring cron job."
+msgstr "Toutes les étapes ont été importées. Replanification de la tâche cron récurrente."
+
+msgid "Deactivating Polarsteps Importer..."
+msgstr "Désactivation de l'Importateur Polarsteps..."
+
+msgid "API Error: %s"
+msgstr "Erreur API : %s"
+
+msgid "Could not parse API response: %s"
+msgstr "Impossible d'analyser la réponse de l'API : %s"
+
+msgid "Image \"%1$s\" successfully attached to post %2$d with ID %3$d."
+msgstr "L'image \"%1$s\" a été jointe avec succès à l'article %2$d avec l'ID %3$d."
+
+msgid "Error downloading image: %s"
+msgstr "Erreur lors du téléchargement de l'image : %s"
+
+msgid "Error uploading image: %s"
+msgstr "Erreur lors de l'envoi de l'image : %s"

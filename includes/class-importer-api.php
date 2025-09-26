@@ -36,10 +36,7 @@ class Polarsteps_Importer_API {
             Polarsteps_Importer_Settings::log_message(sprintf(__('API Request to: %1$s | Args: %2$s', 'polarsteps-importer'), $api_url, print_r($args_for_log, true)));
             Polarsteps_Importer_Settings::log_message(__('API Response (raw):', 'polarsteps-importer') . substr($body, 0, 500) . (strlen($body) > 500 ? '...[truncated]' : ''));
             Polarsteps_Importer_Settings::log_message(__('Data:', 'polarsteps-importer') . print_r($data, true));
-
-            return $data;
         }
-
         if (empty($data['all_steps'])) {
             Polarsteps_Importer_Settings::log_message('Keine Steps gefunden oder ungültige Antwort: ' . print_r($data, true));
             return false;
@@ -80,20 +77,27 @@ class Polarsteps_Importer_API {
         return !empty($posts);
     }
 
-    public static function import_step_photos($media, $post_id, $mode = 'gallery') {
+    public static function import_step_photos($media, $post_id, $mode = 'gallery', $step_title = '') {
         if (empty($media)) {
             return;
         }
 
         $gallery_ids = [];
         $image_html = '';
+        $image_counter = 1;
 
         foreach ($media as $item) {
             if (!empty($item['large_thumbnail_path'])) {
                 $image_url = $item['large_thumbnail_path'];
-                $attachment_id = self::download_and_attach_image($image_url, $post_id);
+                $new_image_title = $step_title;
+                if (count($media) > 1) {
+                    $new_image_title .= ' ' . $image_counter;
+                }
+                $attachment_id = self::download_and_attach_image($image_url, $post_id, $new_image_title);
 
                 if ($attachment_id) { 
+                    // Markiere das Bild für einfaches Löschen
+                    add_post_meta($attachment_id, '_polarsteps_imported_image', true, true);
                     if ($mode === 'gallery') {
                         $gallery_ids[] = $attachment_id;
                     } else {
@@ -101,6 +105,7 @@ class Polarsteps_Importer_API {
                         $image_html .= wp_get_attachment_image($attachment_id, 'large', false, ['class' => 'polarsteps-imported-image']);
                     }
                 }
+                $image_counter++;
             }
         }
 
@@ -126,7 +131,7 @@ class Polarsteps_Importer_API {
         }
     }
 
-    private static function download_and_attach_image($image_url, $post_id) {
+    private static function download_and_attach_image($image_url, $post_id, $image_title = '') {
         require_once ABSPATH . 'wp-admin/includes/image.php';
         require_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/media.php';
@@ -137,12 +142,16 @@ class Polarsteps_Importer_API {
             return false;
         }
 
+        // Sanitize the title to create a friendly filename and get the original extension
+        $file_extension = pathinfo(basename($image_url), PATHINFO_EXTENSION);
+        $sane_filename = sanitize_title($image_title) . '.' . $file_extension;
+
         $file_array = [
-            'name'     => basename($image_url),
+            'name'     => $sane_filename,
             'tmp_name' => $tmp,
         ];
 
-        $attachment_id = media_handle_sideload($file_array, $post_id);
+        $attachment_id = media_handle_sideload($file_array, $post_id, $image_title);
         if (is_wp_error($attachment_id)) {
             Polarsteps_Importer_Settings::log_message(sprintf(__('Error uploading image: %s', 'polarsteps-importer'), $attachment_id->get_error_message()));
             @unlink($tmp);
@@ -152,7 +161,7 @@ class Polarsteps_Importer_API {
             sprintf(
                 /* translators: 1: Image name, 2: Post ID, 3: Attachment ID */
                 __('Image "%1$s" successfully attached to post %2$d with ID %3$d.', 'polarsteps-importer'),
-                basename($image_url),
+                $sane_filename,
                 $post_id,
                 $attachment_id
             )

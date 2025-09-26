@@ -29,16 +29,12 @@ spl_autoload_register(function ($class) {
 // Initialisierung
 add_action('plugins_loaded', function() {
     new Polarsteps_Importer_Core();
-    new Polarsteps_Importer_Settings();
+    if (is_admin()) {
+        new Polarsteps_Importer_Settings();
+    }
 });
 
 // Aktivierung/Deaktivierung
-register_activation_hook(__FILE__, function() {
-    require_once __DIR__ . '/includes/class-importer-cron.php';
-    require_once __DIR__ . '/includes/class-importer-settings.php';
-    Polarsteps_Importer_Cron::schedule_recurring_event();
-});
-
 register_deactivation_hook(__FILE__, function() {
     require_once __DIR__ . '/includes/class-importer-cron.php';
     require_once __DIR__ . '/includes/class-importer-settings.php';
