@@ -88,7 +88,10 @@ class Polarsteps_Importer_Process {
             Polarsteps_Importer_Settings::log_message($log_message);
 
             if (!$debug_mode) {
+                Polarsteps_Importer_Settings::log_message('Preparing to create post');
                 $post_content = wp_kses_post($step['description']);
+
+                Polarsteps_Importer_Settings::log_message('Adding leaflet map');
 
                 // Leaflet Map Shortcode hinzufügen, falls aktiviert und Koordinaten vorhanden
                 if ($add_leaflet_map && !empty($step['location']['lat']) && !empty($step['location']['lon'])) {
@@ -97,17 +100,28 @@ class Polarsteps_Importer_Process {
                     $post_content .= "\n\n[leaflet-map lat=\"{$lat}\" lng=\"{$lon}\"][leaflet-marker lat=\"{$lat}\" lng=\"{$lon}\"]";
                 }
 
+                Polarsteps_Importer_Settings::log_message('Preparing post data');
+
                 $step_date = date('Y-m-d H:i:s', $step['creation_time']);
-                $post_id = wp_insert_post([
+                $post_data = [
                     'post_title'   => sanitize_text_field($step['name']),
                     'post_content' => $post_content,
                     'post_status'  => $post_status,
                     'post_type'    => $post_type,
                     'post_date'    => $step_date,
                     'post_date_gmt'=> get_gmt_from_date($step_date),
-                ]);
+                ];
 
-                if ($post_id) {
+                Polarsteps_Importer_Settings::log_message('Prepared post data');
+                Polarsteps_Importer_Settings::log_message('Creating post with data: ' . print_r($post_data, true));
+
+                $post_id = wp_insert_post($post_data);
+
+                if (is_wp_error($post_id) || $post_id === 0) {
+                    Polarsteps_Importer_Settings::log_message("Post could not be created: " . (is_wp_error($post_id) ? $post_id->get_error_message() : 'Unkown error'));
+                    continue;
+                } elseif ($post_id > 0) {
+                    Polarsteps_Importer_Settings::log_message(sprintf(__('Post created with ID %d.', 'polarsteps-importer'), $post_id));
                     $term_ids_to_set = [];
                     $taxonomy_name = null;
 
@@ -146,6 +160,9 @@ class Polarsteps_Importer_Process {
                             wp_set_object_terms($post_id, array_unique($term_ids_to_set), $taxonomy_name);
                         }
                     }
+                } else {
+                    Polarsteps_Importer_Settings::log_message("An unknown error occurred while creating the post.");
+                    continue;
                 }
 
                 if ($post_id && !empty($step['media']) && !$disable_image_import) {
@@ -161,6 +178,7 @@ class Polarsteps_Importer_Process {
                     $imported_count++;
                 }
             } else {
+                Polarsteps_Importer_Settings::log_message('Debug mode is ON, no post created.');
                 // Im Debug-Modus zählen wir den Beitrag als "importiert", ohne ihn zu erstellen.
                 $imported_count++;
             }

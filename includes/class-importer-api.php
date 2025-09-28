@@ -52,7 +52,7 @@ class Polarsteps_Importer_API {
     public static function step_exists($step_id, $post_type = 'post') {
         $args = [
             'post_type'      => $post_type,
-            'post_status'    => 'any',
+            'post_status'    => ['publish', 'pending', 'draft', 'future', 'private'],
             'posts_per_page' => 1,
             'meta_key'       => '_polarsteps_step_id',
             'meta_value'     => $step_id,
@@ -64,48 +64,46 @@ class Polarsteps_Importer_API {
         $posts = get_posts($args);
 
         // Debug-Log für die Abfrage
-        Polarsteps_Importer_Settings::log_message(
-            sprintf(
-                /* translators: 1: Step ID, 2: Post Type, 3: Number of posts found */
-                __('Checking for Step ID %1$s in post type %2$s: Found %3$d posts.', 'polarsteps-importer'),
-                $step_id,
-                $post_type,
-                count($posts)
-            )
-        );
+        // Polarsteps_Importer_Settings::log_message(
+        //     sprintf(
+        //         /* translators: 1: Step ID, 2: Post Type, 3: Number of posts found */
+        //         __('Checking for Step ID %1$s in post type %2$s: Found %3$d posts.', 'polarsteps-importer'),
+        //         $step_id,
+        //         $post_type,
+        //         count($posts)
+        //     )
+        // );
 
         return !empty($posts);
     }
 
     public static function import_step_photos($media, $post_id, $mode = 'gallery', $step_title = '') {
-        if (empty($media)) {
-            return;
-        }
-
         $gallery_ids = [];
         $image_html = '';
-        $image_counter = 1;
 
-        foreach ($media as $item) {
-            if (!empty($item['large_thumbnail_path'])) {
-                $image_url = $item['large_thumbnail_path'];
-                $new_image_title = $step_title;
-                if (count($media) > 1) {
-                    $new_image_title .= ' ' . $image_counter;
-                }
-                $attachment_id = self::download_and_attach_image($image_url, $post_id, $new_image_title);
-
-                if ($attachment_id) { 
-                    // Markiere das Bild für einfaches Löschen
-                    add_post_meta($attachment_id, '_polarsteps_imported_image', true, true);
-                    if ($mode === 'gallery') {
-                        $gallery_ids[] = $attachment_id;
-                    } else {
-                        // 'embed' mode
-                        $image_html .= wp_get_attachment_image($attachment_id, 'large', false, ['class' => 'polarsteps-imported-image']);
+        if (!empty($media)) {
+            $image_counter = 1;
+            foreach ($media as $item) {
+                if (!empty($item['large_thumbnail_path'])) {
+                    $image_url = $item['large_thumbnail_path'];
+                    $new_image_title = $step_title;
+                    if (count($media) > 1) {
+                        $new_image_title .= ' ' . $image_counter;
                     }
+                    $attachment_id = self::download_and_attach_image($image_url, $post_id, $new_image_title);
+
+                    if ($attachment_id) {
+                        // Markiere das Bild für einfaches Löschen
+                        add_post_meta($attachment_id, '_polarsteps_imported_image', true, true);
+                        if ($mode === 'gallery') {
+                            $gallery_ids[] = $attachment_id;
+                        } else {
+                            // 'embed' mode
+                            $image_html .= wp_get_attachment_image($attachment_id, 'large', false, ['class' => 'polarsteps-imported-image']);
+                        }
+                    }
+                    $image_counter++;
                 }
-                $image_counter++;
             }
         }
 
@@ -122,13 +120,11 @@ class Polarsteps_Importer_API {
             $content_to_append = "\n\n" . $image_html;
         }
 
-        if (!empty($content_to_append)) {
-            $post = get_post($post_id);
-            wp_update_post([
-                'ID'           => $post_id,
-                'post_content' => $post->post_content . $content_to_append,
-            ]);
-        }
+        $post = get_post($post_id);
+        wp_update_post([
+            'ID'           => $post_id,
+            'post_content' => $post->post_content . $content_to_append,
+        ]);
     }
 
     private static function download_and_attach_image($image_url, $post_id, $image_title = '') {

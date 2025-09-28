@@ -146,7 +146,7 @@ class Polarsteps_Importer_Settings {
     public static function log_message($message) {
         $logs = get_option('polarsteps_importer_logs', []);
         $logs[] = '[Polarsteps Importer] ' . current_time('mysql') . ': ' . $message;
-        if (count($logs) > 100) {
+        if (count($logs) > 1000) {
             array_shift($logs);
         }
         update_option('polarsteps_importer_logs', $logs);
