@@ -88,10 +88,13 @@ class Polarsteps_Importer_Process {
             Polarsteps_Importer_Settings::log_message($log_message);
 
             if (!$debug_mode) {
-                Polarsteps_Importer_Settings::log_message('Preparing to create post');
-                $post_content = wp_kses_post($step['description']);
+                // Sanitize content and then use wpautop to correctly create paragraphs (<p>) and line breaks (<br>).
+                $post_content = wpautop(wp_kses_post($step['description']));
 
-                Polarsteps_Importer_Settings::log_message('Adding leaflet map');
+                // Remove emojis to prevent database issues on systems not using utf8mb4.
+                // This regex covers most common emoji ranges.
+                $post_content = preg_replace('/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F700}-\x{1F77F}\x{1F780}-\x{1F7FF}\x{1F800}-\x{1F8FF}\x{1F900}-\x{1F9FF}\x{1FA00}-\x{1FA6F}\x{1FA70}-\x{1FAFF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}]/u', '', $post_content);
+
 
                 // Leaflet Map Shortcode hinzufügen, falls aktiviert und Koordinaten vorhanden
                 if ($add_leaflet_map && !empty($step['location']['lat']) && !empty($step['location']['lon'])) {
@@ -100,9 +103,8 @@ class Polarsteps_Importer_Process {
                     $post_content .= "\n\n[leaflet-map lat=\"{$lat}\" lng=\"{$lon}\"][leaflet-marker lat=\"{$lat}\" lng=\"{$lon}\"]";
                 }
 
-                Polarsteps_Importer_Settings::log_message('Preparing post data');
-
                 $step_date = date('Y-m-d H:i:s', $step['creation_time']);
+
                 $post_data = [
                     'post_title'   => sanitize_text_field($step['name']),
                     'post_content' => $post_content,
@@ -111,9 +113,6 @@ class Polarsteps_Importer_Process {
                     'post_date'    => $step_date,
                     'post_date_gmt'=> get_gmt_from_date($step_date),
                 ];
-
-                Polarsteps_Importer_Settings::log_message('Prepared post data');
-                Polarsteps_Importer_Settings::log_message('Creating post with data: ' . print_r($post_data, true));
 
                 $post_id = wp_insert_post($post_data);
 

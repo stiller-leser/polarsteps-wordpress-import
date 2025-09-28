@@ -62,18 +62,6 @@ class Polarsteps_Importer_API {
         ];
 
         $posts = get_posts($args);
-
-        // Debug-Log für die Abfrage
-        // Polarsteps_Importer_Settings::log_message(
-        //     sprintf(
-        //         /* translators: 1: Step ID, 2: Post Type, 3: Number of posts found */
-        //         __('Checking for Step ID %1$s in post type %2$s: Found %3$d posts.', 'polarsteps-importer'),
-        //         $step_id,
-        //         $post_type,
-        //         count($posts)
-        //     )
-        // );
-
         return !empty($posts);
     }
 
@@ -90,7 +78,16 @@ class Polarsteps_Importer_API {
                     if (count($media) > 1) {
                         $new_image_title .= ' ' . $image_counter;
                     }
-                    $attachment_id = self::download_and_attach_image($image_url, $post_id, $new_image_title);
+
+                    // Check if an image with the same title already exists to prevent duplicates.
+                    $attachment_id = self::find_existing_image_by_title($new_image_title);
+
+                    if ($attachment_id) {
+                        Polarsteps_Importer_Settings::log_message(sprintf(__('Reusing existing image "%1$s" with ID %2$d.', 'polarsteps-importer'), $new_image_title, $attachment_id));
+                    } else {
+                        // If not found, download and attach it.
+                        $attachment_id = self::download_and_attach_image($image_url, $post_id, $new_image_title);
+                    }
 
                     if ($attachment_id) {
                         // Markiere das Bild für einfaches Löschen
@@ -126,6 +123,30 @@ class Polarsteps_Importer_API {
             'post_content' => $post->post_content . $content_to_append,
         ]);
     }
+
+    /**
+     * Find an existing image in the Media Library by its title.
+     *
+     * @param string $title The title of the image to find.
+     * @return int|false The attachment ID if found, otherwise false.
+     */
+    private static function find_existing_image_by_title($title) {
+        $args = [
+            'post_type'      => 'attachment',
+            'post_status'    => 'inherit',
+            'posts_per_page' => 1,
+            'title'          => $title, // Search by exact post_title
+            'fields'         => 'ids',
+            'post_mime_type' => 'image',
+            'suppress_filters' => true,
+            'cache_results'  => false,
+        ];
+
+        $query = new WP_Query($args);
+
+        return $query->have_posts() ? $query->posts[0] : false;
+    }
+
 
     private static function download_and_attach_image($image_url, $post_id, $image_title = '') {
         require_once ABSPATH . 'wp-admin/includes/image.php';
