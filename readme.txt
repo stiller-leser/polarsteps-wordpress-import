@@ -11,7 +11,7 @@ Import your Polarsteps trips as WordPress posts, including images, location data
 
 == Description ==
 
-The Polarsteps Importer plugin provides a seamless way to transfer your travel stories from Polarsteps directly into your WordPress site. Each step of your journey can be imported as a separate post, preserving your content, images, and location data. This is perfect for travel bloggers who want to own their content and display it on their own website.
+The Polarsteps Importer plugin provides a seamless way to transfer your travel stories from Polarsteps directly into your WordPress site. Each step of your journey can be imported as a separate post, preserving your content, images, and location data. This is perfect for travel bloggers who want to own their content and display it on their own website. This plugin is part of the https://rueckenwin.de roadtrip along the panamericana. You also find us on Youtube (https://www.youtube.com/@rueckenwinde) and Instagram (https://www.instagram.com/rueckenwin.de/) If you want to support this plugin, consider donating to us!
 
 = Features =
 
