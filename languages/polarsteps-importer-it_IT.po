@@ -1,15 +1,15 @@
 # Italian translation for Polarsteps Importer
-# Copyright (C) 2023 Kaj-Sören Mossdorf
+# Copyright (C) 2025 Kaj-Sören Mossdorf
 # This file is distributed under the same license as the Polarsteps Importer package.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Polarsteps Importer 1.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-wordpress-import\n"
-"POT-Creation-Date: 2023-10-27 10:00:00+00:00\n"
-"PO-Revision-Date: 2025-09-26 02:52+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
+"POT-Creation-Date: 2024-05-22 12:00:00+00:00\n"
+"PO-Revision-Date: 2025-10-05 08:30+0200\n"
+"Last-Translator: Kaj-Sören Mossdorf <cloud@macroco.de>\n"
+"Language-Team: Kaj-Sören Mossdorf <cloud@macroco.de>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,8 +17,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 3.7\n"
 
+#. Plugin Name of the plugin
 msgid "Polarsteps Importer"
 msgstr "Importatore Polarsteps"
+
+#. Description of the plugin
+msgid "Import your Polarsteps trips as WordPress posts, including images, location data, and original publication dates."
+msgstr "Importa i tuoi viaggi Polarsteps come post di WordPress, includendo immagini, dati sulla località e date di pubblicazione originali."
 
 msgid "Polarsteps Settings"
 msgstr "Impostazioni Polarsteps"
@@ -152,6 +157,9 @@ msgstr "Nessuna Categoria"
 msgid "Select a category for the imported posts."
 msgstr "Seleziona una categoria per gli articoli importati."
 
+msgid "The selected post type has no categories"
+msgstr "Il tipo di post selezionato non ha categorie"
+
 msgid "Adds a Leaflet map with the step's location to the end of the post."
 msgstr "Aggiunge una mappa Leaflet con la posizione del passo alla fine dell'articolo."
 
@@ -163,17 +171,6 @@ msgstr "Abilita la modalità di debug. Non verranno creati articoli, ma la rispo
 
 msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
 msgstr "Inserisci il tuo ID Viaggio di Polarsteps e il Token di Sessione per importare i passi come articoli di WordPress."
-
-msgid "Trip ID and Token set. Recurring cron job scheduled."
-msgstr "ID Viaggio e Token impostati. Processo cron ricorrente pianificato."
-
-msgid "Update interval changed. Cron job has been rescheduled."
-msgstr "Intervallo di aggiornamento modificato. Il processo cron è stato riprogrammato."
-
-msgid "Every hour"
-msgid_plural "Every %d hours"
-msgstr[0] "Ogni ora"
-msgstr[1] "Ogni %d ore"
 
 msgid "Recurring cron job scheduled."
 msgstr "Processo cron ricorrente pianificato."
@@ -226,3 +223,14 @@ msgstr "Errore durante il download dell'immagine: %s"
 
 msgid "Error uploading image: %s"
 msgstr "Errore durante il caricamento dell'immagine: %s"
+
+#~ msgid "Trip ID and Token set. Recurring cron job scheduled."
+#~ msgstr "ID Viaggio e Token impostati. Processo cron ricorrente pianificato."
+
+#~ msgid "Update interval changed. Cron job has been rescheduled."
+#~ msgstr "Intervallo di aggiornamento modificato. Il processo cron è stato riprogrammato."
+
+#~ msgid "Every hour"
+#~ msgid_plural "Every %d hours"
+#~ msgstr[0] "Ogni ora"
+#~ msgstr[1] "Ogni %d ore"

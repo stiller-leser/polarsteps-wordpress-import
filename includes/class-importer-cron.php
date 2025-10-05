@@ -10,7 +10,7 @@ class Polarsteps_Importer_Cron {
             'interval' => $interval * HOUR_IN_SECONDS,
             'display'  => sprintf(
                 /* translators: %d: number of hours */
-                _n('Every hour', 'Every %d hours', $interval, 'polarsteps-importer'),
+                _n('Every %d hour', 'Every %d hours', $interval, 'polarsteps-importer'),
                 $interval
             ),
         ];
@@ -23,7 +23,10 @@ class Polarsteps_Importer_Cron {
             $interval_hours = $options['polarsteps_update_interval'] ?? 1;
             $first_run_time = time() + ($interval_hours * HOUR_IN_SECONDS);
             wp_schedule_event($first_run_time, 'polarsteps_interval', self::HOOK);
-            Polarsteps_Importer_Settings::log_message(__('Recurring cron job scheduled.', 'polarsteps-importer'));
+            Polarsteps_Importer_Settings::log_message(
+                /* translators: Log message indicating that the automatic, recurring import job has been successfully scheduled. */
+                __('Recurring cron job scheduled.', 'polarsteps-importer')
+            );
         }
     }
 

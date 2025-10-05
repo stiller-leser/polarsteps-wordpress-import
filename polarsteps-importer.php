@@ -3,6 +3,7 @@
 Plugin Name: Polarsteps Importer
 Description: Import your Polarsteps trips as WordPress posts, including images, location data, and original publication dates.
 Version: 1.1
+License: GPLv2 or later
 Author: Kaj-Sören Mossdorf
 Author URI: https://macroco.de
 Text Domain: polarsteps-importer
@@ -28,6 +29,7 @@ spl_autoload_register(function ($class) {
 
 // Initialisierung
 add_action('plugins_loaded', function() {
+    // load_plugin_textdomain() ist nicht mehr nötig, WordPress lädt Übersetzungen automatisch.
     new Polarsteps_Importer_Core();
     if (is_admin()) {
         new Polarsteps_Importer_Settings();

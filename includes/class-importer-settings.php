@@ -4,7 +4,6 @@ class Polarsteps_Importer_Settings {
     public function __construct() {
         add_action('admin_menu', [$this, 'add_admin_menu']);
         add_action('admin_init', [$this, 'settings_init']);
-        add_filter('pre_update_option_polarsteps_importer_settings', [$this, 'save_settings'], 10, 1);
     }
 
     public function add_admin_menu() {
@@ -20,7 +19,10 @@ class Polarsteps_Importer_Settings {
     }
 
     public function settings_init() {
-        register_setting('polarsteps_importer', 'polarsteps_importer_settings');
+        register_setting('polarsteps_importer', 'polarsteps_importer_settings', [
+            'sanitize_callback' => [ $this, 'sanitize_settings' ],
+            'show_in_rest' => false, // Explizit setzen, falls nicht benötigt
+        ]);
 
         add_settings_section(
             'polarsteps_importer_section',
@@ -219,8 +221,8 @@ class Polarsteps_Importer_Settings {
         echo '</div>';
         // Lösch-Button für Logs
         echo '<p class="submit" style="margin-top: 10px; padding: 0;">';
-        // Formular für Log-Aktionen
-        echo '<form method="post" style="display: inline-block; margin-right: 10px;">';
+        // Formular für Log-Aktionen mit expliziter Action-URL
+        echo '<form method="post" action="' . esc_url(admin_url('options-general.php?page=polarsteps-importer')) . '" style="display: inline-block; margin-right: 10px;">';
         wp_nonce_field('polarsteps_importer_clear_logs_nonce', 'polarsteps_importer_clear_logs_nonce');
         submit_button(__('Clear Logs', 'polarsteps-importer'), 'delete', 'clear_logs', false);
         echo '</form>';
@@ -241,13 +243,14 @@ class Polarsteps_Importer_Settings {
         if (!empty($decrypted_token)) {
             $placeholder = substr($decrypted_token, 0, 3) . str_repeat('*', strlen($decrypted_token) - 3);
         }
-        echo '<input type="text" name="polarsteps_importer_remember_token" value="" placeholder="' . esc_attr($placeholder) . '">';
+        echo '<input type="text" name="polarsteps_importer_settings[polarsteps_remember_token]" value="" placeholder="' . esc_attr($placeholder) . '">';
         if (!empty($decrypted_token)) {
             echo '<p class="description">' . esc_html__('A token is already saved. To change it, enter a new one.', 'polarsteps-importer') . '</p>';
         }
         echo '<p class="description">' . esc_html__('Your Remember Token will be stored encrypted and will not be displayed again.', 'polarsteps-importer') . '</p>';
     }
 
+    
     public function disable_image_import_render() {
         $options = get_option('polarsteps_importer_settings');
         echo '<input type="checkbox" id="polarsteps_disable_image_import" name="polarsteps_importer_settings[polarsteps_disable_image_import]" ' .
@@ -292,9 +295,9 @@ class Polarsteps_Importer_Settings {
         $options = get_option('polarsteps_importer_settings');
         $mode = $options['polarsteps_image_import_mode'] ?? 'gallery';
         $disable_image_import = $options['polarsteps_disable_image_import'] ?? false;
-        $style = $disable_image_import ? 'style="display:none;"' : '';
+        $style = $disable_image_import ? 'display:none;' : '';
         ?>
-        <div id="polarsteps_image_import_mode_wrapper" <?php echo $style; ?>>
+        <div id="polarsteps_image_import_mode_wrapper" <?php if ( ! empty( $style ) ) : ?>style="<?php echo esc_attr( $style ); ?>"<?php endif; ?>>
             <select name="polarsteps_importer_settings[polarsteps_image_import_mode]">
                 <option value="gallery" <?php selected($mode, 'gallery'); ?>><?php esc_html_e('Append as gallery shortcode', 'polarsteps-importer'); ?></option>
                 <option value="embed" <?php selected($mode, 'embed'); ?>><?php esc_html_e('Embed individually in content', 'polarsteps-importer'); ?></option>
@@ -450,10 +453,14 @@ class Polarsteps_Importer_Settings {
         if ($is_leaflet_active) {
             echo '<p class="description">' . esc_html__('Adds a Leaflet map with the step\'s location to the end of the post.', 'polarsteps-importer') . '</p>';
         } else {
-            $install_url = admin_url('plugin-install.php?tab=search&s=leaflet-map');
+            $plugin_url = 'https://wordpress.org/plugins/leaflet-map/';
+            $allowed_html = ['a' => ['href' => [], 'target' => []]];
+            /* translators: %s: URL to the Leaflet Map plugin page on wordpress.org. */
+            $text = __('The <a href="%s" target="_blank">Leaflet Map</a> plugin must be installed and activated to use this feature.', 'polarsteps-importer');
+
             echo '<p class="description">' . sprintf(
-                wp_kses(__('The <a href="%s" target="_blank">Leaflet Map</a> plugin must be installed and activated to use this feature.', 'polarsteps-importer'), ['a' => ['href' => [], 'target' => []]]),
-                esc_url($install_url)
+                wp_kses($text, $allowed_html),
+                esc_url($plugin_url)
             ) . '</p>';
         }
     }
@@ -468,30 +475,61 @@ class Polarsteps_Importer_Settings {
         echo '<p>' . esc_html__('Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts.', 'polarsteps-importer') . '</p>';
     }
 
-    public function save_settings($settings) {
-        $current_options = get_option('polarsteps_importer_settings');
+    /**
+     * Bereinigt und validiert die Plugin-Einstellungen vor dem Speichern.
+     *
+     * @param array $input Die rohen Eingabedaten aus dem Formular.
+     * @return array Die bereinigten und validierten Einstellungen.
+     */
+    public function sanitize_settings($input) {
+        $sanitized_input = [];
+        $current_options = get_option('polarsteps_importer_settings', []);
 
-        if (isset($_POST['polarsteps_importer_remember_token']) && !empty($_POST['polarsteps_importer_remember_token'])) {
-            $settings['polarsteps_remember_token'] = Polarsteps_Importer_Security::encrypt($_POST['polarsteps_importer_remember_token']);
+        // Trip ID: Muss eine positive Ganzzahl sein.
+        $sanitized_input['polarsteps_trip_id'] = isset($input['polarsteps_trip_id']) ? absint($input['polarsteps_trip_id']) : 0;
+
+        // Remember Token: Verschlüsseln, wenn ein neuer Wert eingegeben wurde.
+        if (!empty($input['polarsteps_remember_token'])) {
+            $sanitized_input['polarsteps_remember_token'] = Polarsteps_Importer_Security::encrypt(sanitize_text_field($input['polarsteps_remember_token']));
         } else {
-            $settings['polarsteps_remember_token'] = $current_options['polarsteps_remember_token'] ?? '';
+            // Behalte den alten Token, wenn kein neuer eingegeben wurde.
+            $sanitized_input['polarsteps_remember_token'] = $current_options['polarsteps_remember_token'] ?? '';
         }
 
+        // Update Interval: Muss eine positive Ganzzahl sein, Standard 1.
+        $sanitized_input['polarsteps_update_interval'] = isset($input['polarsteps_update_interval']) ? max(1, absint($input['polarsteps_update_interval'])) : 1;
+        // Steps per Run: Muss eine positive Ganzzahl sein, Standard 10.
+        $sanitized_input['polarsteps_steps_per_run'] = isset($input['polarsteps_steps_per_run']) ? max(1, absint($input['polarsteps_steps_per_run'])) : 10;
+        // Ignored Step IDs: Komma-getrennte Liste von Zahlen.
+        $sanitized_input['polarsteps_ignored_step_ids'] = isset($input['polarsteps_ignored_step_ids']) ? sanitize_text_field($input['polarsteps_ignored_step_ids']) : '';
+        // Checkboxen: Wert ist '1' oder nicht vorhanden.
+        $checkboxes = ['polarsteps_ignore_no_title', 'polarsteps_disable_image_import', 'polarsteps_use_location_detail_as_category', 'polarsteps_leaflet_map', 'polarsteps_debug_mode'];
+        foreach ($checkboxes as $checkbox) {
+            $sanitized_input[$checkbox] = !empty($input[$checkbox]) ? '1' : '0';
+        }
+        // Select-Felder: Nur erlaubte Werte zulassen.
+        $sanitized_input['polarsteps_image_import_mode'] = in_array($input['polarsteps_image_import_mode'] ?? '', ['gallery', 'embed'], true) ? $input['polarsteps_image_import_mode'] : 'gallery';
+        $sanitized_input['polarsteps_post_status'] = in_array($input['polarsteps_post_status'] ?? '', ['draft', 'publish'], true) ? $input['polarsteps_post_status'] : 'draft';
+        // Post Type: Muss ein registrierter Post-Type sein.
+        $sanitized_input['polarsteps_post_type'] = isset($input['polarsteps_post_type']) && post_type_exists($input['polarsteps_post_type']) ? $input['polarsteps_post_type'] : 'post';
+        // Post Category: Muss eine positive Ganzzahl (Term-ID) sein.
+        $sanitized_input['polarsteps_post_category'] = isset($input['polarsteps_post_category']) ? absint($input['polarsteps_post_category']) : 0;
+
+        // Cron-Job-Logik
         $current_interval = $current_options['polarsteps_update_interval'] ?? 1;
-        $new_interval = $settings['polarsteps_update_interval'] ?? 1;
         $next_scheduled = wp_next_scheduled(Polarsteps_Importer_Cron::HOOK);
 
         // Fall 1: Noch kein Cron-Job geplant, aber alle Daten sind jetzt da.
-        if (!$next_scheduled && !empty($settings['polarsteps_trip_id']) && !empty($settings['polarsteps_remember_token'])) {
+        if (!$next_scheduled && !empty($sanitized_input['polarsteps_trip_id']) && !empty($sanitized_input['polarsteps_remember_token'])) {
             Polarsteps_Importer_Cron::schedule_recurring_event();
             self::log_message(__('Trip ID and Token set. Recurring cron job scheduled.', 'polarsteps-importer'));
-        } elseif ($new_interval != $current_interval && $next_scheduled) {
-            // Fall 2: Das Intervall hat sich geändert, plane den Job neu.
+        } elseif (($sanitized_input['polarsteps_update_interval'] !== $current_interval) && $next_scheduled) {
+            // Fall 2: Das Intervall hat sich geändert und ein Job ist bereits geplant -> neu planen.
             wp_clear_scheduled_hook(Polarsteps_Importer_Cron::HOOK);
             Polarsteps_Importer_Cron::schedule_recurring_event();
             self::log_message(__('Update interval changed. Cron job has been rescheduled.', 'polarsteps-importer'));
         }
 
-        return $settings;
+        return $sanitized_input;
     }
 }

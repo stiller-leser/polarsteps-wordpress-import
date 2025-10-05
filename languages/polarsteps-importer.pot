@@ -1,27 +1,19 @@
-# Copyright (C) 2024 Kaj-Sören Mossdorf
+# Copyright (C) 2025 Kaj-Sören Mossdorf
 # This file is distributed under the same license as the Polarsteps Importer plugin.
 msgid ""
 msgstr ""
 "Project-Id-Version: Polarsteps Importer 1.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-"
+"importer\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-21 10:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Project-Id-Version: Polarsteps Importer 1.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-21 10:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: Gemini Code Assist\n"
-"X-Domain: polarsteps-importer\n"
+"POT-Creation-Date: 2024-05-22 12:00:00+00:00\n"
+"PO-Revision-Date: 2024-05-22 12:00:00+00:00\n"
+"Last-Translator: Kaj-Sören Mossdorf <kaj-soeren@mossdorf.de>\n"
+"Language-Team: Kaj-Sören Mossdorf <kaj-soeren@mossdorf.de>\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. Plugin Name of the plugin
 msgid "Polarsteps Importer"
@@ -33,180 +25,86 @@ msgid ""
 "data, and original publication dates."
 msgstr ""
 
-#: includes/class-importer-plugin.php:8
-msgid "Recurring cron job scheduled on plugin activation."
-msgstr ""
-
-#: includes/class-importer-plugin.php:15
-msgid "Deactivating Polarsteps Importer..."
-msgstr ""
-
-#: includes/class-importer-plugin.php:38
-msgid "Every hour"
-msgid_plural "Every %d hours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/class-importer-plugin.php:180
-msgid "%d new post was imported."
-msgid_plural "%d new posts were imported."
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/class-importer-plugin.php:137
-msgid "Found %d new post to import."
-msgid_plural "Found %d new posts to import."
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/class-importer-plugin.php:52
-msgid "Recurring cron job re-scheduled after settings update."
-msgstr ""
-
-#: includes/class-importer-plugin.php:93
-msgid "Trip ID or Remember Token is missing."
-msgstr ""
-
-
-#: includes/class-importer-plugin.php:248
-msgid "Recurring cron job re-scheduled after import."
-
-#: includes/class-importer-plugin.php:65
-msgid "You do not have permission to perform this action."
-msgstr ""
-
-#: includes/class-importer-plugin.php:65
-msgid "Manual import triggered."
-msgstr ""
-
-#: includes/class-importer-plugin.php:153
-msgid "Importing post %1$d of %2$d: \"%3$s\""
-msgstr ""
-
-#: includes/class-importer-api.php:20
-msgid "API Error: %s"
-msgstr ""
-
-#: includes/class-importer-api.php:25
-msgid "Could not parse API response: %s"
-msgstr ""
-
-#: includes/class-importer-api.php:29
-msgid "Debug mode active. Data received:"
-msgstr ""
-
-#: includes/class-importer-api.php:34
-msgid "API Request to: %1$s | Args: %2$s"
-msgstr ""
-
-#: includes/class-importer-api.php:35
-msgid "API Response (raw):"
-msgstr ""
-
-#: includes/class-importer-api.php:36
-msgid "Data:"
-msgstr ""
-
-#: includes/class-importer-api.php:48
-msgid "Steps found:"
-msgstr ""
-
-#: includes/class-importer-api.php:71
-msgid "Checking for Step ID %1$s in post type %2$s: Found %3$d posts."
-msgstr ""
-
-#: includes/class-importer-api.php:120
-msgid "Error downloading image: %s"
-msgstr ""
-
-#: includes/class-importer-api.php:130
-msgid "Error uploading image: %s"
-msgstr ""
-
-#: includes/class-importer-api.php:137
-msgid "Image \"%1$s\" successfully attached to post %2$d with ID %3$d."
-msgstr ""
-
-
-#: includes/class-importer-settings.php:143
-msgid "Max Steps per Run"
-msgstr ""
-
-#: includes/class-importer-settings.php:314
-msgid "Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps."
-msgstr ""
+#: includes/class-importer-settings.php:10
 #: includes/class-importer-settings.php:11
-
-#: includes/class-importer-settings.php:79
-msgid "Image Import Mode"
-msgstr ""
-
-#: includes/class-importer-settings.php:326
-msgid "Append as gallery shortcode"
-msgstr ""
-
-#: includes/class-importer-settings.php:327
-msgid "Embed individually in content"
-msgstr ""
-#: includes/class-importer-settings.php:12
-#: includes/class-importer-settings.php:161
-msgid "Polarsteps Importer"
+#: includes/class-importer-settings.php:179
 msgstr ""
 
 #: includes/class-importer-settings.php:26
 msgid "Polarsteps Settings"
 msgstr ""
 
-#: includes/class-importer-settings.php:32
+#: includes/class-importer-settings.php:37
 msgid "Trip ID"
 msgstr ""
 
-#: includes/class-importer-settings.php:39
+#: includes/class-importer-settings.php:44
 msgid "Remember Token"
 msgstr ""
 
-#: includes/class-importer-settings.php:46
-msgid "Ignore steps without title"
-msgstr ""
-
-#: includes/class-importer-settings.php:53
-msgid "Ignore Step IDs"
-msgstr ""
-
-#: includes/class-importer-settings.php:60
-msgid "Post Type"
-msgstr ""
-
-#: includes/class-importer-settings.php:67
-msgid "Category"
-msgstr ""
-
-#: includes/class-importer-settings.php:74
-msgid "Post Status"
-msgstr ""
-
-#: includes/class-importer-settings.php:81
+#: includes/class-importer-settings.php:51
 msgid "Update Interval (in hours)"
 msgstr ""
 
-#: includes/class-importer-settings.php:88
+#: includes/class-importer-settings.php:58
+msgid "Max Steps per Run"
+msgstr ""
+
+#: includes/class-importer-settings.php:65
+msgid "Ignore Step IDs"
+msgstr ""
+
+#: includes/class-importer-settings.php:72
+msgid "Ignore steps without title"
+msgstr ""
+
+#: includes/class-importer-settings.php:79
+msgid "Disable Image Import"
+msgstr ""
+
+#: includes/class-importer-settings.php:86
+msgid "Image Import Mode"
+msgstr ""
+
+#: includes/class-importer-settings.php:93
+msgid "Post Type"
+msgstr ""
+
+#: includes/class-importer-settings.php:100
+msgid "Post Status"
+msgstr ""
+
+#: includes/class-importer-settings.php:107
+msgid "Category"
+msgstr ""
+
+#: includes/class-importer-settings.php:114
+msgid "Use location detail as category"
+msgstr ""
+
+#: includes/class-importer-settings.php:121
+msgid "Add Leaflet Map"
+msgstr ""
+
+#: includes/class-importer-settings.php:128
 msgid "Enable Debug Mode"
 msgstr ""
 
-#: includes/class-importer-settings.php:154
+#: includes/class-importer-settings.php:147
 msgid "Logs have been cleared."
 msgstr ""
 
-#: includes/class-importer-settings.php:162
+#: includes/class-importer-settings.php:152
 msgid ""
 "The import has been started in the background. The logs will be updated "
 "shortly."
 msgstr ""
 
-#: includes/class-importer-settings.php:177
+#: includes/class-importer-settings.php:157
 msgid "The manual import has been successfully completed."
 msgstr ""
-#: includes/class-importer-settings.php:167
+
+#: includes/class-importer-settings.php:166
 msgid "Save Settings"
 msgstr ""
 
@@ -214,85 +112,140 @@ msgstr ""
 msgid "Manual Import"
 msgstr ""
 
-#: includes/class-importer-settings.php:201
-msgid "Debug Logs"
-msgstr ""
-
-#: includes/class-importer-settings.php:175
+#: includes/class-importer-settings.php:176
 msgid "Import Now"
 msgstr ""
 
-#: includes/class-importer-settings.php:186
+#: includes/class-importer-settings.php:179
+msgid "Debug Logs"
+msgstr ""
+
+#: includes/class-importer-settings.php:187
 msgid "No logs found. Run an import to generate logs."
 msgstr ""
 
-#: includes/class-importer-settings.php:197
+#: includes/class-importer-settings.php:198
 msgid "Clear Logs"
 msgstr ""
 
-#: includes/class-importer-settings.php:256
+#: includes/class-importer-settings.php:200
 msgid "Refresh Logs"
 msgstr ""
-#: includes/class-importer-settings.php:211
+
+#: includes/class-importer-settings.php:213
+msgid "No token found"
+msgstr ""
+
+#: includes/class-importer-settings.php:219
+msgid "A token is already saved. To change it, enter a new one."
+msgstr ""
+
+#: includes/class-importer-settings.php:221
 msgid ""
-"Enter your Remember Token. It will be stored encrypted and will not be "
-"displayed again."
+"Your Remember Token will be stored encrypted and will not be displayed "
+"again."
 msgstr ""
 
-#: includes/class-importer-settings.php:217
-msgid "Enable to skip steps without a title."
-msgstr ""
-
-#: includes/class-importer-settings.php:223
-msgid "e.g. 12345,67890,11111"
-msgstr ""
-
-#: includes/class-importer-settings.php:224
-msgid "Step IDs to ignore (comma-separated)."
+#: includes/class-importer-settings.php:227
+msgid "Check this to prevent any images from being imported."
 msgstr ""
 
 #: includes/class-importer-settings.php:233
+msgid "Enable to skip steps without a title."
+msgstr ""
+
+#: includes/class-importer-settings.php:239
+msgid "e.g. 12345,67890,11111"
+msgstr ""
+
+#: includes/class-importer-settings.php:240
+msgid "Step IDs to ignore (comma-separated)."
+msgstr ""
+
+#: includes/class-importer-settings.php:246
+msgid ""
+"If checked, the \"detail\" field from the location data will be used to set "
+"the post category in addition to the manual selection below."
+msgstr ""
+
+#: includes/class-importer-settings.php:256
+msgid ""
+"Limits the number of new steps to import in a single run. Helps prevent "
+"timeouts on servers with many steps."
+msgstr ""
+
+#: includes/class-importer-settings.php:280
+msgid "Append as gallery shortcode"
+msgstr ""
+
+#: includes/class-importer-settings.php:281
+msgid "Embed individually in content"
+msgstr ""
+
+#: includes/class-importer-settings.php:283
+msgid "Choose how images are added to the post."
+msgstr ""
+
+#: includes/class-importer-settings.php:290
 msgid "Draft"
 msgstr ""
 
-#: includes/class-importer-settings.php:234
+#: includes/class-importer-settings.php:291
 msgid "Published"
 msgstr ""
 
-#: includes/class-importer-settings.php:250
-msgid "Select the post type into which the Polarsteps steps should be imported."
+#: includes/class-importer-settings.php:305
+msgid ""
+"Select the post type into which the Polarsteps steps should be imported."
 msgstr ""
 
-#: includes/class-importer-settings.php:251
+#: includes/class-importer-settings.php:306
 msgid "By default, \"post\" is used."
 msgstr ""
 
-#: includes/class-importer-settings.php:271
+#: includes/class-importer-settings.php:325
 msgid "The selected post type has no categories."
 msgstr ""
 
-#: includes/class-importer-settings.php:285
-#: includes/class-importer-settings.php:306
+#: includes/class-importer-settings.php:337
 msgid "No Category"
 msgstr ""
 
-#: includes/class-importer-settings.php:292
+#: includes/class-importer-settings.php:343
 msgid "Select a category for the imported posts."
 msgstr ""
 
-#: includes/class-importer-settings.php:330
+#: includes/class-importer-settings.php:351
 msgid "The selected post type has no categories"
 msgstr ""
 
-#: includes/class-importer-settings.php:337
+#: includes/class-importer-settings.php:382
+msgid "Adds a Leaflet map with the step's location to the end of the post."
+msgstr ""
+
+#: includes/class-importer-settings.php:386
+#, php-format
+msgid ""
+"The <a href=\"%s\" target=\"_blank\">Leaflet Map</a> plugin must be installed "
+"and activated to use this feature."
+msgstr ""
+
+#: includes/class-importer-settings.php:396
 msgid ""
 "Enables debug mode. No posts will be created, but the API response will be "
 "logged."
 msgstr ""
 
-#: includes/class-importer-settings.php:341
-msgid "Enter your Polarsteps Trip ID and Remember Token to import steps as WordPress posts."
+#: includes/class-importer-settings.php:400
+msgid ""
+"Enter your Polarsteps Trip ID and Remember Token to import steps as "
+"WordPress posts."
+msgstr ""
 
-#: includes/class-importer-settings.php:329
-msgid "Choose how images are added to the post."
+#: includes/class-importer-settings.php:433
+msgid "Trip ID and Token set. Recurring cron job scheduled."
+msgstr ""
+
+#: includes/class-importer-settings.php:437
+msgid "Update interval changed. Cron job has been rescheduled."
 msgstr ""

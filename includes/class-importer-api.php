@@ -16,7 +16,11 @@ class Polarsteps_Importer_API {
         $response = wp_remote_get($api_url, $args);
 
         if (is_wp_error($response)) {
-            Polarsteps_Importer_Settings::log_message(sprintf(__('API Error: %s', 'polarsteps-importer'), $response->get_error_message()));
+            Polarsteps_Importer_Settings::log_message(sprintf(
+                /* translators: %s: The error message from the API response. */
+                __('API Error: %s', 'polarsteps-importer'),
+                $response->get_error_message()
+            ));
             return false;
         }
 
@@ -24,7 +28,11 @@ class Polarsteps_Importer_API {
         $data = json_decode(trim($body), true);
 
         if (is_null($data)) {
-            Polarsteps_Importer_Settings::log_message(sprintf(__('Could not parse API response: %s', 'polarsteps-importer'), json_last_error_msg()));
+            Polarsteps_Importer_Settings::log_message(sprintf(
+                /* translators: %s: The error message from json_last_error_msg(). */
+                __('Could not parse API response: %s', 'polarsteps-importer'),
+                json_last_error_msg()
+            ));
         }
 
         if ($debug) {
@@ -33,7 +41,11 @@ class Polarsteps_Importer_API {
             $masked_token = substr($remember_token, 0, 3) . str_repeat('*', strlen($remember_token) - 3);
             $args_for_log = $args;
             $args_for_log['headers']['Cookie'] = "remember_token={$masked_token}";
-            Polarsteps_Importer_Settings::log_message(sprintf(__('API Request to: %1$s | Args: %2$s', 'polarsteps-importer'), $api_url, print_r($args_for_log, true)));
+            Polarsteps_Importer_Settings::log_message(sprintf(
+                /* translators: 1: The API URL, 2: The request arguments. */
+                __('API Request to: %1$s | Args: %2$s', 'polarsteps-importer'),
+                $api_url, print_r($args_for_log, true)
+            ));
             Polarsteps_Importer_Settings::log_message(__('API Response (raw):', 'polarsteps-importer') . substr($body, 0, 500) . (strlen($body) > 500 ? '...[truncated]' : ''));
             Polarsteps_Importer_Settings::log_message(__('Data:', 'polarsteps-importer') . print_r($data, true));
         }
@@ -57,7 +69,6 @@ class Polarsteps_Importer_API {
             'meta_key'       => '_polarsteps_step_id',
             'meta_value'     => $step_id,
             'fields'         => 'ids',
-            'suppress_filters' => true, // Wichtig für die Performance bei vielen Posts
             'cache_results'  => false,  // Deaktiviert den Cache für diese Abfrage
         ];
 
@@ -83,7 +94,11 @@ class Polarsteps_Importer_API {
                     $attachment_id = self::find_existing_image_by_title($new_image_title);
 
                     if ($attachment_id) {
-                        Polarsteps_Importer_Settings::log_message(sprintf(__('Reusing existing image "%1$s" with ID %2$d.', 'polarsteps-importer'), $new_image_title, $attachment_id));
+                        Polarsteps_Importer_Settings::log_message(sprintf(
+                            /* translators: 1: The image title, 2: The attachment ID. */
+                            __('Reusing existing image "%1$s" with ID %2$d.', 'polarsteps-importer'),
+                            $new_image_title, $attachment_id
+                        ));
                     } else {
                         // If not found, download and attach it.
                         $attachment_id = self::download_and_attach_image($image_url, $post_id, $new_image_title);
@@ -138,7 +153,6 @@ class Polarsteps_Importer_API {
             'title'          => $title, // Search by exact post_title
             'fields'         => 'ids',
             'post_mime_type' => 'image',
-            'suppress_filters' => true,
             'cache_results'  => false,
         ];
 
@@ -155,7 +169,11 @@ class Polarsteps_Importer_API {
 
         $tmp = download_url($image_url);
         if (is_wp_error($tmp)) {
-            Polarsteps_Importer_Settings::log_message(sprintf(__('Error downloading image: %s', 'polarsteps-importer'), $tmp->get_error_message()));
+            Polarsteps_Importer_Settings::log_message(sprintf(
+                /* translators: %s: The error message from the download attempt. */
+                __('Error downloading image: %s', 'polarsteps-importer'),
+                $tmp->get_error_message()
+            ));
             return false;
         }
 
@@ -170,8 +188,12 @@ class Polarsteps_Importer_API {
 
         $attachment_id = media_handle_sideload($file_array, $post_id, $image_title);
         if (is_wp_error($attachment_id)) {
-            Polarsteps_Importer_Settings::log_message(sprintf(__('Error uploading image: %s', 'polarsteps-importer'), $attachment_id->get_error_message()));
-            @unlink($tmp);
+            Polarsteps_Importer_Settings::log_message(sprintf(
+                /* translators: %s: The error message from the upload attempt. */
+                __('Error uploading image: %s', 'polarsteps-importer'),
+                $attachment_id->get_error_message()
+            ));
+            wp_delete_file($tmp);
             return false;
         }
         Polarsteps_Importer_Settings::log_message(

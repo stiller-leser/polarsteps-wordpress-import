@@ -56,7 +56,7 @@ class Polarsteps_Importer_Process {
         $total_found = count($steps_to_import);
         Polarsteps_Importer_Settings::log_message(
             sprintf(
-                /* translators: %d is the number of posts to import. */
+                /* translators: %d: The number of new posts found to import. */
                 _n(
                     'Found %d new post to import.',
                     'Found %d new posts to import.',
@@ -79,7 +79,7 @@ class Polarsteps_Importer_Process {
         $imported_count = 0;
         foreach ($steps_to_process as $index => $step) {
             $log_message = sprintf(
-                /* translators: 1: current post number, 2: total posts number, 3: post title */
+                /* translators: 1: Current post number, 2: Total posts number, 3: Post title. */
                 __('Importing post %1$d of %2$d: "%3$s"', 'polarsteps-importer'),
                 $index + 1,
                 $total_to_import,
@@ -103,7 +103,7 @@ class Polarsteps_Importer_Process {
                     $post_content .= "\n\n[leaflet-map lat=\"{$lat}\" lng=\"{$lon}\"][leaflet-marker lat=\"{$lat}\" lng=\"{$lon}\"]";
                 }
 
-                $step_date = date('Y-m-d H:i:s', $step['creation_time']);
+                $step_date = gmdate('Y-m-d H:i:s', $step['creation_time']);
 
                 $post_data = [
                     'post_title'   => sanitize_text_field($step['name']),
@@ -120,7 +120,10 @@ class Polarsteps_Importer_Process {
                     Polarsteps_Importer_Settings::log_message("Post could not be created: " . (is_wp_error($post_id) ? $post_id->get_error_message() : 'Unkown error'));
                     continue;
                 } elseif ($post_id > 0) {
-                    Polarsteps_Importer_Settings::log_message(sprintf(__('Post created with ID %d.', 'polarsteps-importer'), $post_id));
+                    Polarsteps_Importer_Settings::log_message(sprintf(
+                        /* translators: %d: The ID of the newly created post. */
+                        __('Post created with ID %d.', 'polarsteps-importer'),
+                        $post_id));
                     $term_ids_to_set = [];
                     $taxonomy_name = null;
 
@@ -190,21 +193,22 @@ class Polarsteps_Importer_Process {
     private static function finalize_import($imported_count, $remaining_steps = 0, $is_manual_run = false) {
         if ($imported_count > 0) {
             Polarsteps_Importer_Settings::log_message(
-                sprintf(
-                    /* translators: %d is the number of imported posts. */
-                    _n(
-                        '%d new post was imported.',
-                        '%d new posts were imported.',
-                        $imported_count,
-                        'polarsteps-importer'
-                    ),
-                    $imported_count
-                )
+                 sprintf(
+                     /* translators: %d: The number of imported posts. */
+                     _n(
+                         '%d new post was imported.',
+                         '%d new posts were imported.',
+                         $imported_count,
+                         'polarsteps-importer'
+                     ),
+                     $imported_count
+                 )
             );
 
             if ($remaining_steps > 0) {
                 Polarsteps_Importer_Settings::log_message(
                     sprintf(
+                        /* translators: %d: The number of remaining steps. */
                         __('Import run finished. %d steps remaining for the next run.', 'polarsteps-importer'),
                         $remaining_steps
                     )

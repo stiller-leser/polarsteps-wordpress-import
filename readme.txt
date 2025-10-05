@@ -1,8 +1,8 @@
 === Polarsteps Importer ===
-Contributors: Kaj-Sören Mossdorf
-Tags: polarsteps, import, travel, blog, posts, images
+Contributors: macrocode
+Tags: polarsteps, import, travel, posts, images
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.8
 Stable tag: 1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
