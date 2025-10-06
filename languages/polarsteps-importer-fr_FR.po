@@ -121,8 +121,8 @@ msgstr "ex: 12345,67890,11111"
 msgid "Step IDs to ignore (comma-separated)."
 msgstr "ID d'étapes à ignorer (séparés par des virgules)."
 
-msgid "If checked, the \"detail\" field from the location data will be used to set the post category in addition to the manual selection below."
-msgstr "Si coché, le champ \"détail\" des données de localisation sera utilisé pour définir la catégorie de l'article en plus de la sélection manuelle ci-dessous."
+msgid "If checked, the country from the location data will be automatically translated and set as a category."
+msgstr "Si cette case est cochée, le pays provenant des données de localisation sera automatiquement traduit et défini comme catégorie."
 
 msgid "Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps."
 msgstr "Limite le nombre de nouvelles étapes à importer en une seule fois. Aide à prévenir les temps morts sur les serveurs avec de nombreuses étapes."

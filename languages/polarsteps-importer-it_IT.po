@@ -121,8 +121,8 @@ msgstr "es. 12345,67890,11111"
 msgid "Step IDs to ignore (comma-separated)."
 msgstr "ID dei passi da ignorare (separati da virgola)."
 
-msgid "If checked, the \"detail\" field from the location data will be used to set the post category in addition to the manual selection below."
-msgstr "Se selezionato, il campo \"detail\" dai dati di localizzazione verrà utilizzato per impostare la categoria dell'articolo in aggiunta alla selezione manuale sottostante."
+msgid "If checked, the country from the location data will be automatically translated and set as a category."
+msgstr "Se selezionato, il paese dai dati di localizzazione verrà tradotto automaticamente e impostato come categoria."
 
 msgid "Limits the number of new steps to import in a single run. Helps prevent timeouts on servers with many steps."
 msgstr "Limita il numero di nuovi passi da importare in una singola esecuzione. Aiuta a prevenire timeout su server con molti passi."

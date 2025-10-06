@@ -129,7 +129,7 @@ class Polarsteps_Importer_Settings {
 
         add_settings_field(
             'polarsteps_leaflet_map',
-            __('Add Leaflet Map', 'polarsteps-importer'),
+            __('Add Leaflet map', 'polarsteps-importer'),
             [$this, 'leaflet_map_render'],
             'polarsteps-importer',
             'polarsteps_importer_section'
@@ -271,13 +271,6 @@ class Polarsteps_Importer_Settings {
              'value="' . esc_attr($options['polarsteps_ignored_step_ids'] ?? '') . '" ' .
              'placeholder="' . esc_attr__('e.g. 12345,67890,11111', 'polarsteps-importer') . '" style="width: 300px;">';
         echo '<p class="description">' . esc_html__('Step IDs to ignore (comma-separated).', 'polarsteps-importer') . '</p>';
-    }
-
-    public function use_location_detail_as_category_render() {
-        $options = get_option('polarsteps_importer_settings');
-        echo '<input type="checkbox" id="polarsteps_use_location_detail_as_category" name="polarsteps_importer_settings[polarsteps_use_location_detail_as_category]" ' .
-             checked($options['polarsteps_use_location_detail_as_category'] ?? false, true, false) . ' value="1">';
-        echo '<p class="description">' . esc_html__('If checked, the "detail" field from the location data will be used to set the post category in addition to the manual selection below.', 'polarsteps-importer') . '</p>';
     }
 
     public function update_interval_render() {
@@ -442,11 +435,18 @@ class Polarsteps_Importer_Settings {
         <?php
     }
 
+    public function use_location_detail_as_category_render() {
+        $options = get_option('polarsteps_importer_settings');
+        echo '<input type="checkbox" id="polarsteps_use_location_detail_as_category" name="polarsteps_importer_settings[polarsteps_use_location_detail_as_category]" ' .
+             checked($options['polarsteps_use_location_detail_as_category'] ?? false, true, false) . ' value="1">';
+        echo '<p class="description">' . esc_html__('If checked, the country from the location data will be automatically translated and set as a category.', 'polarsteps-importer') . '</p>';
+    }
+
     public function leaflet_map_render() {
         $options = get_option('polarsteps_importer_settings');
         $is_leaflet_active = is_plugin_active('leaflet-map/leaflet-map.php');
 
-        echo '<input type="checkbox" name="polarsteps_importer_settings[polarsteps_leaflet_map]" ' .
+        echo '<input type="checkbox" name="polarsteps_importer_settings[polarsteps_leaflet_map]" id="polarsteps_leaflet_map" ' .
              checked($options['polarsteps_leaflet_map'] ?? false, true, false) . ' value="1" ' .
              disabled(!$is_leaflet_active, true, false) . '>';
 
@@ -502,8 +502,7 @@ class Polarsteps_Importer_Settings {
         $sanitized_input['polarsteps_steps_per_run'] = isset($input['polarsteps_steps_per_run']) ? max(1, absint($input['polarsteps_steps_per_run'])) : 10;
         // Ignored Step IDs: Komma-getrennte Liste von Zahlen.
         $sanitized_input['polarsteps_ignored_step_ids'] = isset($input['polarsteps_ignored_step_ids']) ? sanitize_text_field($input['polarsteps_ignored_step_ids']) : '';
-        // Checkboxen: Wert ist '1' oder nicht vorhanden.
-        $checkboxes = ['polarsteps_ignore_no_title', 'polarsteps_disable_image_import', 'polarsteps_use_location_detail_as_category', 'polarsteps_leaflet_map', 'polarsteps_debug_mode'];
+        $checkboxes = ['polarsteps_ignore_no_title', 'polarsteps_disable_image_import', 'polarsteps_use_location_detail_as_category', 'polarsteps_leaflet_map', 'polarsteps_debug_mode']; // Checkboxen: Wert ist '1' oder nicht vorhanden.
         foreach ($checkboxes as $checkbox) {
             $sanitized_input[$checkbox] = !empty($input[$checkbox]) ? '1' : '0';
         }

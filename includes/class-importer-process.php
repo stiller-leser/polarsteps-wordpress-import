@@ -140,6 +140,7 @@ class Polarsteps_Importer_Process {
                         // 1. Kategorie aus Standortdetails hinzufügen
                         if ($use_location_detail_as_category && !empty($step['location']['detail'])) {
                             $category_name = sanitize_text_field($step['location']['detail']);
+                            $category_name = Polarsteps_Importer_Translations::translate_country($category_name);
                             $term = get_term_by('name', $category_name, $taxonomy_name);
 
                             if ($term) {
