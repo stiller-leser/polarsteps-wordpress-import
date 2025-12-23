@@ -227,6 +227,42 @@ msgstr "Error al descargar la imagen: %s"
 msgid "Error uploading image: %s"
 msgstr "Error al subir la imagen: %s"
 
+msgid "Trip ID or Remember Token is missing."
+msgstr "Falta el ID del Viaje o el Token de Sesión."
+
+msgid "Post created with ID %d."
+msgstr "Publicación creada con ID %d."
+
+msgid "Unknown error"
+msgstr "Error desconocido"
+
+msgid "Post could not be created: %s"
+msgstr "No se pudo crear la publicación: %s"
+
+msgid "An unknown error occurred while creating the post."
+msgstr "Ocurrió un error desconocido al crear la publicación."
+
+msgid "Debug mode is ON, no post created."
+msgstr "El modo de depuración está ACTIVADO, no se creó ninguna publicación."
+
+msgid "No steps found or invalid response: "
+msgstr "No se encontraron pasos o respuesta inválida: "
+
+msgid "Media import incomplete. Deleting post to allow retry in next run."
+msgstr "Importación de medios incompleta. Eliminando publicación para reintentar en la próxima ejecución."
+
+msgid "Attempt %d to download media failed: %s. Retrying..."
+msgstr "Intento %d de descargar medios fallido: %s. Reintentando..."
+
+msgid "Error downloading media after %d attempts: %s"
+msgstr "Error al descargar medios después de %d intentos: %s"
+
+msgid "Reusing existing media \"%1$s\" with ID %2$d."
+msgstr "Reutilizando medio existente \"%1$s\" con ID %2$d."
+
+msgid "Your browser does not support the video tag."
+msgstr "Tu navegador no soporta la etiqueta de video."
+
 #~ msgid "Update interval changed. Cron job has been rescheduled."
 #~ msgstr "Intervalo de actualización cambiado. La tarea cron ha sido reprogramada."
 
@@ -234,3 +270,51 @@ msgstr "Error al subir la imagen: %s"
 #~ msgid_plural "Every %d hours"
 #~ msgstr[0] "Cada hora"
 #~ msgstr[1] "Cada %d horas"
+
+msgid "Imported Posts"
+msgstr "Entradas Importadas"
+
+msgid "No imported posts found."
+msgstr "No se encontraron entradas importadas."
+
+msgid "%d posts deleted."
+msgstr "%d entradas eliminadas."
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Step ID"
+msgstr "ID de Paso"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "Also delete attached media (images/videos)"
+msgstr "Borrar también medios adjuntos (imágenes/videos)"
+
+msgid "Delete Selected"
+msgstr "Borrar Seleccionados"
+
+msgid "Are you sure you want to delete the selected posts?"
+msgstr "¿Estás seguro de que quieres borrar las entradas seleccionadas?"
+
+msgid "Deleted %d posts via management interface."
+msgstr "%d entradas eliminadas vía interfaz de gestión."
+
+msgid "Convert to Gallery"
+msgstr "Convertir a Galería"
+
+msgid "Are you sure you want to convert the selected posts? This will remove individual images/videos from the content and replace them with a gallery."
+msgstr "¿Estás seguro de que quieres convertir las entradas seleccionadas? Esto eliminará imágenes/videos individuales del contenido y los reemplazará con una galería."
+
+msgid "%d posts converted to gallery."
+msgstr "%d entradas convertidas a galería."
+
+msgid "Converted %d posts to gallery via management interface."
+msgstr "%d entradas convertidas a galería vía interfaz de gestión."

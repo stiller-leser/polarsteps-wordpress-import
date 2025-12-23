@@ -224,6 +224,42 @@ msgstr "Erreur lors du téléchargement de l'image : %s"
 msgid "Error uploading image: %s"
 msgstr "Erreur lors de l'envoi de l'image : %s"
 
+msgid "Trip ID or Remember Token is missing."
+msgstr "L'ID de voyage ou le jeton de rappel est manquant."
+
+msgid "Post created with ID %d."
+msgstr "Article créé avec l'ID %d."
+
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+msgid "Post could not be created: %s"
+msgstr "L'article n'a pas pu être créé : %s"
+
+msgid "An unknown error occurred while creating the post."
+msgstr "Une erreur inconnue s'est produite lors de la création de l'article."
+
+msgid "Debug mode is ON, no post created."
+msgstr "Le mode débogage est ACTIVÉ, aucun article créé."
+
+msgid "No steps found or invalid response: "
+msgstr "Aucune étape trouvée ou réponse invalide : "
+
+msgid "Media import incomplete. Deleting post to allow retry in next run."
+msgstr "Importation des médias incomplète. Suppression de l'article pour réessayer lors de la prochaine exécution."
+
+msgid "Attempt %d to download media failed: %s. Retrying..."
+msgstr "La tentative %d de téléchargement du média a échoué : %s. Nouvel essai..."
+
+msgid "Error downloading media after %d attempts: %s"
+msgstr "Erreur lors du téléchargement du média après %d tentatives : %s"
+
+msgid "Reusing existing media \"%1$s\" with ID %2$d."
+msgstr "Réutilisation du média existant \"%1$s\" avec l'ID %2$d."
+
+msgid "Your browser does not support the video tag."
+msgstr "Votre navigateur ne prend pas en charge la balise vidéo."
+
 #~ msgid "Trip ID and Token set. Recurring cron job scheduled."
 #~ msgstr "ID de voyage et jeton définis. Tâche cron récurrente planifiée."
 
@@ -234,3 +270,51 @@ msgstr "Erreur lors de l'envoi de l'image : %s"
 #~ msgid_plural "Every %d hours"
 #~ msgstr[0] "Toutes les heures"
 #~ msgstr[1] "Toutes les %d heures"
+
+msgid "Imported Posts"
+msgstr "Articles importés"
+
+msgid "No imported posts found."
+msgstr "Aucun article importé trouvé."
+
+msgid "%d posts deleted."
+msgstr "%d articles supprimés."
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Step ID"
+msgstr "ID de l'étape"
+
+msgid "Status"
+msgstr "État"
+
+msgid "View"
+msgstr "Voir"
+
+msgid "Also delete attached media (images/videos)"
+msgstr "Supprimer également les médias joints (images/vidéos)"
+
+msgid "Delete Selected"
+msgstr "Supprimer la sélection"
+
+msgid "Are you sure you want to delete the selected posts?"
+msgstr "Êtes-vous sûr de vouloir supprimer les articles sélectionnés ?"
+
+msgid "Deleted %d posts via management interface."
+msgstr "%d articles supprimés via l'interface de gestion."
+
+msgid "Convert to Gallery"
+msgstr "Convertir en galerie"
+
+msgid "Are you sure you want to convert the selected posts? This will remove individual images/videos from the content and replace them with a gallery."
+msgstr "Êtes-vous sûr de vouloir convertir les articles sélectionnés ? Cela supprimera les images/vidéos individuelles du contenu et les remplacera par une galerie."
+
+msgid "%d posts converted to gallery."
+msgstr "%d articles convertis en galerie."
+
+msgid "Converted %d posts to gallery via management interface."
+msgstr "%d articles convertis en galerie via l'interface de gestion."

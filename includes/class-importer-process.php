@@ -30,24 +30,30 @@ class Polarsteps_Importer_Process {
             // Wenn keine Steps gefunden wurden, trotzdem den Cron-Job neu planen, um es später erneut zu versuchen.
             self::finalize_import(0, 0, $is_manual_run);
             return;
-        }
+        }        
 
         // Filtere zuerst alle Steps, die tatsächlich importiert werden sollen.
         $steps_to_import = [];
         foreach ($steps as $step) {
+            if (empty($step['display_name'])) {
+                continue;
+            }
             if (isset($step['is_deleted']) && true === $step['is_deleted']) {
                 continue;
             }
             if (in_array($step['id'], $ignored_step_ids)) {
                 continue;
             }
-            if ($ignore_no_title && empty($step['name'])) {
-                continue;
-            }
+            // if ($ignore_no_title && empty($step['display_name'])) {
+            //      if ($debug_mode) { Polarsteps_Importer_Settings::log_message(sprintf('Skipped Step %s: No title and ignore_no_title is active', $step['id'])); }
+            //     continue;
+            // }
             if (empty($step['description'])) {
+                 if ($debug_mode) { Polarsteps_Importer_Settings::log_message(sprintf('Skipped Step %s ("%s"): Description is empty', $step['id'], $step['display_name'] ?? 'Unknown')); }
                 continue;
             }
             if (Polarsteps_Importer_API::step_exists($step['id'], $post_type)) {
+                 if ($debug_mode) { Polarsteps_Importer_Settings::log_message(sprintf('Skipped Step %s ("%s"): Already exists', $step['id'], $step['display_name'] ?? 'Unknown')); }
                 continue;
             }
             $steps_to_import[] = $step;
@@ -83,7 +89,7 @@ class Polarsteps_Importer_Process {
                 __('Importing post %1$d of %2$d: "%3$s"', 'polarsteps-importer'),
                 $index + 1,
                 $total_to_import,
-                $step['name']
+                $step['display_name']
             );
             Polarsteps_Importer_Settings::log_message($log_message);
 
@@ -106,7 +112,7 @@ class Polarsteps_Importer_Process {
                 $step_date = gmdate('Y-m-d H:i:s', $step['creation_time']);
 
                 $post_data = [
-                    'post_title'   => sanitize_text_field($step['name']),
+                    'post_title'   => sanitize_text_field($step['display_name']),
                     'post_content' => $post_content,
                     'post_status'  => $post_status,
                     'post_type'    => $post_type,
@@ -117,7 +123,11 @@ class Polarsteps_Importer_Process {
                 $post_id = wp_insert_post($post_data);
 
                 if (is_wp_error($post_id) || $post_id === 0) {
-                    Polarsteps_Importer_Settings::log_message("Post could not be created: " . (is_wp_error($post_id) ? $post_id->get_error_message() : 'Unkown error'));
+                    Polarsteps_Importer_Settings::log_message(sprintf(
+                        /* translators: %s: Error message */
+                        __('Post could not be created: %s', 'polarsteps-importer'),
+                        (is_wp_error($post_id) ? $post_id->get_error_message() : __('Unknown error', 'polarsteps-importer'))
+                    ));
                     continue;
                 } elseif ($post_id > 0) {
                     Polarsteps_Importer_Settings::log_message(sprintf(
@@ -164,12 +174,21 @@ class Polarsteps_Importer_Process {
                         }
                     }
                 } else {
-                    Polarsteps_Importer_Settings::log_message("An unknown error occurred while creating the post.");
+                    Polarsteps_Importer_Settings::log_message(__('An unknown error occurred while creating the post.', 'polarsteps-importer'));
                     continue;
                 }
 
                 if ($post_id && !empty($step['media']) && !$disable_image_import) {
-                    Polarsteps_Importer_API::import_step_photos($step['media'], $post_id, $image_import_mode, $step['name']);
+                    $import_success = Polarsteps_Importer_API::import_step_media($step['media'], $post_id, $image_import_mode, $step['display_name']);
+                    
+                    if (!$import_success) {
+                         Polarsteps_Importer_Settings::log_message(__('Media import incomplete. Deleting post to allow retry in next run.', 'polarsteps-importer'));
+                         wp_delete_post($post_id, true); // Force delete post, attachments are preserved
+                         // Decrement imported count effectively by not counting it? 
+                         // But imported_count is for *completed* steps.
+                         // We should continue to next step.
+                         continue;
+                    }
                 }
 
                 if ($post_id && !empty($step['location'])) {
@@ -181,7 +200,7 @@ class Polarsteps_Importer_Process {
                     $imported_count++;
                 }
             } else {
-                Polarsteps_Importer_Settings::log_message('Debug mode is ON, no post created.');
+                Polarsteps_Importer_Settings::log_message(__('Debug mode is ON, no post created.', 'polarsteps-importer'));
                 // Im Debug-Modus zählen wir den Beitrag als "importiert", ohne ihn zu erstellen.
                 $imported_count++;
             }

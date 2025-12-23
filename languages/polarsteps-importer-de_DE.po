@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Polarsteps Importer 1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/polarsteps-importer\n"
 "POT-Creation-Date: 2024-05-22 12:00:00+00:00\n"
-"PO-Revision-Date: 2025-10-06 02:22+0200\n"
+"PO-Revision-Date: 2025-12-20 07:15+0100\n"
 "Last-Translator: Kaj-Sören Mossdorf <cloud@macroco.de>\n"
 "Language-Team: Kaj-Sören Mossdorf <cloud@macroco.de>\n"
 "Language: de_DE\n"
@@ -236,3 +236,87 @@ msgstr "Trip ID und Token gesetzt. Wiederkehrender Cron-Job geplant."
 #: includes/class-importer-settings.php:437
 msgid "Update interval changed. Cron job has been rescheduled."
 msgstr "Update-Intervall geändert. Cron-Job wurde neu geplant."
+
+msgid "Imported Posts"
+msgstr "Importierte Beiträge"
+
+msgid "No imported posts found."
+msgstr "Keine importierten Beiträge gefunden."
+
+msgid "%d posts deleted."
+msgstr "%d Beiträge gelöscht."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Step ID"
+msgstr "Step ID"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "View"
+msgstr "Ansehen"
+
+msgid "Also delete attached media (images/videos)"
+msgstr "Auch angehängte Medien löschen (Bilder/Videos)"
+
+msgid "Delete Selected"
+msgstr "Ausgewählte löschen"
+
+msgid "Are you sure you want to delete the selected posts?"
+msgstr "Bist du sicher, dass du die ausgewählten Beiträge löschen möchtest?"
+
+msgid "Deleted %d posts via management interface."
+msgstr "%d Beiträge über die Verwaltungsoberfläche gelöscht."
+
+msgid "Convert to Gallery"
+msgstr "In Galerie umwandeln"
+
+msgid "Are you sure you want to convert the selected posts? This will remove individual images/videos from the content and replace them with a gallery."
+msgstr "Bist du sicher, dass du die ausgewählten Beiträge konvertieren möchtest? Dies entfernt einzelne Bilder/Videos aus dem Inhalt und ersetzt sie durch eine Galerie."
+
+msgid "%d posts converted to gallery."
+msgstr "%d Beiträge in Galerie umgewandelt."
+
+msgid "Converted %d posts to gallery via management interface."
+msgstr "%d Beiträge über die Verwaltungsoberfläche in Galerie umgewandelt."
+
+msgid "Trip ID or Remember Token is missing."
+msgstr "Trip ID oder Remember Token fehlen."
+
+msgid "Post created with ID %d."
+msgstr "Beitrag mit ID %d erstellt."
+
+msgid "Unknown error"
+msgstr "Unbekannter Fehler"
+
+msgid "Post could not be created: %s"
+msgstr "Beitrag konnte nicht erstellt werden: %s"
+
+msgid "An unknown error occurred while creating the post."
+msgstr "Ein unbekannter Fehler ist beim Erstellen des Beitrags aufgetreten."
+
+msgid "Debug mode is ON, no post created."
+msgstr "Debug-Modus ist AN, kein Beitrag erstellt."
+
+msgid "No steps found or invalid response: "
+msgstr "Keine Steps gefunden oder ungültige Antwort: "
+
+msgid "Media import incomplete. Deleting post to allow retry in next run."
+msgstr "Medienimport unvollständig. Lösche Beitrag für erneuten Versuch beim nächsten Lauf."
+
+msgid "Attempt %d to download media failed: %s. Retrying..."
+msgstr "Versuch %d Mediendownload fehlgeschlagen: %s. Versuche es erneut..."
+
+msgid "Error downloading media after %d attempts: %s"
+msgstr "Fehler beim Herunterladen der Medien nach %d Versuchen: %s"
+
+msgid "Reusing existing media \"%1$s\" with ID %2$d."
+msgstr "Verwende existierendes Medium \"%1$s\" mit ID %2$d wieder."
+
+msgid "Your browser does not support the video tag."
+msgstr "Dein Browser unterstützt das Video-Tag nicht."

@@ -224,6 +224,42 @@ msgstr "Errore durante il download dell'immagine: %s"
 msgid "Error uploading image: %s"
 msgstr "Errore durante il caricamento dell'immagine: %s"
 
+msgid "Trip ID or Remember Token is missing."
+msgstr "Manca l'ID viaggio o il Remember Token."
+
+msgid "Post created with ID %d."
+msgstr "Articolo creato con ID %d."
+
+msgid "Unknown error"
+msgstr "Errore sconosciuto"
+
+msgid "Post could not be created: %s"
+msgstr "Impossibile creare l'articolo: %s"
+
+msgid "An unknown error occurred while creating the post."
+msgstr "Si è verificato un errore sconosciuto durante la creazione dell'articolo."
+
+msgid "Debug mode is ON, no post created."
+msgstr "La modalità di debug è ATTIVA, nessun articolo creato."
+
+msgid "No steps found or invalid response: "
+msgstr "Nessun passaggio trovato o risposta non valida: "
+
+msgid "Media import incomplete. Deleting post to allow retry in next run."
+msgstr "Importazione media incompleta. Cancellazione articolo per riprovare alla prossima esecuzione."
+
+msgid "Attempt %d to download media failed: %s. Retrying..."
+msgstr "Tentativo %d di scaricare i media fallito: %s. Riprovo..."
+
+msgid "Error downloading media after %d attempts: %s"
+msgstr "Errore durante il download dei media dopo %d tentativi: %s"
+
+msgid "Reusing existing media \"%1$s\" with ID %2$d."
+msgstr "Riutilizzo media esistente \"%1$s\" con ID %2$d."
+
+msgid "Your browser does not support the video tag."
+msgstr "Il tuo browser non supporta il tag video."
+
 #~ msgid "Trip ID and Token set. Recurring cron job scheduled."
 #~ msgstr "ID Viaggio e Token impostati. Processo cron ricorrente pianificato."
 
@@ -234,3 +270,51 @@ msgstr "Errore durante il caricamento dell'immagine: %s"
 #~ msgid_plural "Every %d hours"
 #~ msgstr[0] "Ogni ora"
 #~ msgstr[1] "Ogni %d ore"
+
+msgid "Imported Posts"
+msgstr "Articoli Importati"
+
+msgid "No imported posts found."
+msgstr "Nessun articolo importato trovato."
+
+msgid "%d posts deleted."
+msgstr "%d articoli cancellati."
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Step ID"
+msgstr "ID Passo"
+
+msgid "Status"
+msgstr "Stato"
+
+msgid "View"
+msgstr "Vedi"
+
+msgid "Also delete attached media (images/videos)"
+msgstr "Elimina anche i supporti allegati (immagini/video)"
+
+msgid "Delete Selected"
+msgstr "Elimina Selezionati"
+
+msgid "Are you sure you want to delete the selected posts?"
+msgstr "Sei sicuro di voler eliminare gli articoli selezionati?"
+
+msgid "Deleted %d posts via management interface."
+msgstr "%d articoli eliminati tramite l'interfaccia di gestione."
+
+msgid "Convert to Gallery"
+msgstr "Converti in Galleria"
+
+msgid "Are you sure you want to convert the selected posts? This will remove individual images/videos from the content and replace them with a gallery."
+msgstr "Sei sicuro di voler convertire gli articoli selezionati? Questo rimuoverà le singole immagini/video dal contenuto e le sostituirà con una galleria."
+
+msgid "%d posts converted to gallery."
+msgstr "%d articoli convertiti in galleria."
+
+msgid "Converted %d posts to gallery via management interface."
+msgstr "%d articoli convertiti in galleria tramite l'interfaccia di gestione."
